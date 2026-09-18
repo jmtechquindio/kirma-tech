@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" width="100%" height="100%">
+      <rect width="600" height="420" fill="#2c2f33" />
+      <rect x="50" y="40" width="500" height="240" rx="6" fill="#171817" stroke="#333733" stroke-width="2" />
+      <text x="70" y="70" font-family="monospace" font-size="12" fill="#9ca3af">DELL Latitude 5420 — TECLADO ESPAÑOL EMPRESARIAL</text>
+      <!-- Teclas representativas -->
+      <g fill="#242725" stroke="#383c39" stroke-width="1">
+        <rect x="70" y="90" width="30" height="25" rx="3" />
+        <rect x="105" y="90" width="30" height="25" rx="3" />
+        <rect x="140" y="90" width="30" height="25" rx="3" />
+        <rect x="175" y="90" width="30" height="25" rx="3" />
+        <rect x="210" y="90" width="30" height="25" rx="3" />
+        <rect x="245" y="90" width="30" height="25" rx="3" />
+        <rect x="280" y="90" width="30" height="25" rx="3" />
+        <rect x="315" y="90" width="30" height="25" rx="3" />
+        <rect x="350" y="90" width="30" height="25" rx="3" />
+        <rect x="385" y="90" width="30" height="25" rx="3" />
+        <rect x="420" y="90" width="30" height="25" rx="3" />
+        <rect x="455" y="90" width="50" height="25" rx="3" />
+        <!-- Espaciadora -->
+        <rect x="180" y="220" width="200" height="30" rx="3" />
+      </g>
+      
+      <!-- Touchpad con reporte de prueba -->
+      <rect x="210" y="300" width="180" height="95" rx="4" fill="#1f2120" stroke="#3b3f3c" stroke-width="1.5" />
+      <text x="300" y="350" font-family="monospace" font-size="11" fill="#34d399" text-anchor="middle">TOUCHPAD TESTED: OK</text>
+    </svg>

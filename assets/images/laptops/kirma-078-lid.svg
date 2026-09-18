@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" width="100%" height="100%">
+      <rect width="600" height="420" fill="#f8faf9" />
+      <!-- Tapa superior del chasis -->
+      <rect x="100" y="60" width="400" height="280" rx="10" fill="#bcc4cc" stroke="#373c39" stroke-width="2" />
+      <!-- Logo del fabricante en el centro o esquina -->
+      <circle cx="300" cy="200" r="28" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
+      <text x="300" y="206" font-family="-apple-system, sans-serif" font-size="14" font-weight="bold" fill="rgba(255,255,255,0.7)" text-anchor="middle">HP</text>
+      <!-- Etiqueta de inventario KIRMA pegada en esquina técnica -->
+      <rect x="120" y="80" width="130" height="65" rx="3" fill="#ffffff" stroke="#164e39" stroke-width="1.5" />
+      <text x="130" y="98" font-family="monospace" font-size="9" font-weight="bold" fill="#164e39">KIRMA ASSET TAG</text>
+      <text x="130" y="116" font-family="monospace" font-size="13" font-weight="bold" fill="#111827">KIRMA / 078</text>
+      <text x="130" y="134" font-family="monospace" font-size="8" fill="#4b5563">EliteBook 850 G7</text>
+    </svg>

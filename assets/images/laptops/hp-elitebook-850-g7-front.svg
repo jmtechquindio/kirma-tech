@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" width="100%" height="100%">
+  <defs>
+    <linearGradient id="screenBg_078" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14211a" />
+      <stop offset="100%" stop-color="#0a120e" />
+    </linearGradient>
+    <linearGradient id="chassisGrad_078" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#bcc4cc" />
+      <stop offset="100%" stop-color="#121312" />
+    </linearGradient>
+  </defs>
+
+  <!-- Sombra inferior sobria -->
+  <ellipse cx="300" cy="385" rx="240" ry="14" fill="#000000" opacity="0.12" />
+
+  <!-- Tapa / Pantalla Abierta -->
+  <rect x="100" y="45" width="400" height="250" rx="8" fill="url(#chassisGrad_078)" stroke="#3f433f" stroke-width="2" />
+  
+  <!-- Bisel de la Pantalla -->
+  <rect x="112" y="56" width="376" height="226" rx="4" fill="#181a19" />
+  
+  <!-- Área de Panel Activo -->
+  <rect x="120" y="64" width="360" height="210" rx="2" fill="url(#screenBg_078)" />
+  
+  <!-- Interfaz Técnica en Pantalla (Ficha Técnica y Kirma Check) -->
+  <rect x="135" y="80" width="130" height="18" rx="2" fill="#164e39" />
+  <text x="142" y="93" font-family="monospace" font-size="10" font-weight="bold" fill="#a7f3d0">KIRMA / READY</text>
+  
+  <text x="135" y="125" font-family="-apple-system, sans-serif" font-size="16" font-weight="bold" fill="#ffffff">HP EliteBook 850 G7</text>
+  <text x="135" y="145" font-family="monospace" font-size="11" fill="#9ca3af">15.6 FHD 400 nits 32GB RAM</text>
+  
+  <!-- Métricas en pantalla -->
+  <rect x="135" y="165" width="155" height="40" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" />
+  <text x="145" y="180" font-family="monospace" font-size="9" fill="#9ca3af">KIRMA CHECK</text>
+  <text x="145" y="196" font-family="monospace" font-size="11" font-weight="bold" fill="#34d399">10/10 VERIFICADO</text>
+
+  <!-- Asset Tag Holográfico en Pantalla -->
+  <rect x="345" y="80" width="120" height="65" rx="3" fill="#1e2220" stroke="#059669" stroke-dasharray="3 2" />
+  <text x="355" y="98" font-family="monospace" font-size="9" fill="#9ca3af">ASSET TAG</text>
+  <text x="355" y="115" font-family="monospace" font-size="12" font-weight="bold" fill="#ffffff">KIRMA / 078</text>
+  <text x="355" y="132" font-family="monospace" font-size="8" fill="#10b981">GARANTÍA 6 MESES</text>
+
+  <!-- Cámara Web y Obturador Físico -->
+  <circle cx="300" cy="51" r="2.5" fill="#374151" />
+  <rect x="295" y="47" width="10" height="8" rx="1" fill="none" stroke="#4b5563" stroke-width="0.75" />
+
+  <!-- Base del Teclado / Chasis Inferior -->
+  <polygon points="60,370 540,370 500,290 100,290" fill="#bcc4cc" stroke="#333733" stroke-width="2" />
+  
+  <!-- Hendidura del Teclado -->
+  <polygon points="120,335 480,335 460,296 140,296" fill="#1b1c1b" />
+  
+  <!-- Líneas sutiles de teclas -->
+  <line x1="145" y1="305" x2="455" y2="305" stroke="#2a2c2b" stroke-width="4" stroke-dasharray="8 3" />
+  <line x1="140" y1="315" x2="460" y2="315" stroke="#2a2c2b" stroke-width="4" stroke-dasharray="9 3" />
+  <line x1="135" y1="325" x2="465" y2="325" stroke="#2a2c2b" stroke-width="4" stroke-dasharray="10 3" />
+  
+  
+
+  <!-- Touchpad y Botones -->
+  <rect x="250" y="342" width="100" height="24" rx="2" fill="#242625" stroke="#373a38" stroke-width="1" />
+  
+  <!-- Bisel Frontal / Ranura de Apertura -->
+  <path d="M 275 370 Q 300 373 325 370" stroke="#525854" stroke-width="2" fill="none" />
+</svg>

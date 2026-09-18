@@ -1,0 +1,700 @@
+/**
+ * KIRMA — Estilos de Secciones del Sitio.
+ * Header, Hero, Educativo, Catálogo, Finder, Comparador, Soporte, Garantía, Nosotros, Contacto, Footer.
+ */
+
+/* Header y Barra Superior */
+.top-announcement {
+  background: var(--kirma-green-900);
+  color: #ffffff;
+  padding: 6px 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-align: center;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.top-announcement a {
+  color: #a7f3d0;
+  text-decoration: underline;
+  margin-left: 6px;
+}
+
+.main-header {
+  background: var(--kirma-bg-surface);
+  border-bottom: 1px solid var(--kirma-border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 5000;
+  backdrop-filter: blur(8px);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.brand-block {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-logo {
+  font-size: 1.625rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--kirma-text-main);
+  text-transform: uppercase;
+}
+
+.brand-tagline {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--kirma-green-700);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-left: 1px solid var(--kirma-border-main);
+  padding-left: 12px;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--kirma-text-body);
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--kirma-green-700);
+  border-bottom-color: var(--kirma-green-700);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--kirma-border-main);
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+/* Hero Principal */
+.hero-section {
+  padding: 4rem 0 3.5rem 0;
+  background: linear-gradient(180deg, var(--kirma-bg-surface) 0%, var(--kirma-bg-main) 100%);
+  border-bottom: 1px solid var(--kirma-border-subtle);
+  position: relative;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.hero-content {
+  max-width: 620px;
+}
+
+.hero-tag {
+  margin-bottom: 1.25rem;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--kirma-text-main);
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--kirma-text-body);
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+
+.hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.hero-trust-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--kirma-border-subtle);
+}
+
+.trust-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.trust-item-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--kirma-green-700);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.trust-item-desc {
+  font-size: 0.8125rem;
+  color: var(--kirma-text-muted);
+  line-height: 1.3;
+}
+
+.hero-visual {
+  position: relative;
+  background: var(--kirma-bg-surface);
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.hero-asset-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+/* Sección Educativa: Remanufacturado vs Nuevo vs Usado */
+.educational-section {
+  padding: 4rem 0;
+  background: var(--kirma-bg-cream);
+  border-bottom: 1px solid var(--kirma-border-main);
+}
+
+.comparison-triad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.triad-card {
+  background: var(--kirma-bg-surface);
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-sm);
+  padding: 1.75rem;
+  position: relative;
+}
+
+.triad-card.highlight {
+  border: 2px solid var(--kirma-green-700);
+  box-shadow: var(--shadow-sm);
+}
+
+.triad-badge {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  background: var(--kirma-green-700);
+  color: #ffffff;
+  border-radius: var(--radius-xs);
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+.triad-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.triad-desc {
+  font-size: 0.875rem;
+  color: var(--kirma-text-body);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.triad-points {
+  list-style: none;
+  font-size: 0.8125rem;
+  color: var(--kirma-text-muted);
+}
+
+.triad-points li {
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ¿Por qué equipos corporativos? */
+.corporate-why-section {
+  padding: 4rem 0;
+  border-bottom: 1px solid var(--kirma-border-subtle);
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.benefit-card {
+  padding: 1.5rem;
+  background: var(--kirma-bg-surface);
+  border: 1px solid var(--kirma-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.benefit-num {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--kirma-earth-700);
+  margin-bottom: 0.5rem;
+}
+
+.benefit-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.benefit-desc {
+  font-size: 0.875rem;
+  color: var(--kirma-text-muted);
+  line-height: 1.5;
+}
+
+/* Catálogo de Equipos */
+.catalog-section {
+  padding: 4.5rem 0;
+}
+
+.catalog-controls {
+  background: var(--kirma-bg-surface);
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.search-and-status-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.catalog-search-box {
+  flex-grow: 1;
+  position: relative;
+}
+
+.catalog-search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-sm);
+  background: var(--kirma-bg-main);
+}
+
+.catalog-search-icon {
+  position: absolute;
+  left: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--kirma-text-subtle);
+}
+
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--kirma-border-subtle);
+}
+
+.filter-select {
+  padding: 0.5rem 0.875rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-sm);
+  background: var(--kirma-bg-surface);
+  color: var(--kirma-text-main);
+  cursor: pointer;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Buscador por Necesidad: Encuentra tu equipo */
+.finder-section {
+  padding: 4.5rem 0;
+  background: var(--kirma-bg-surface);
+  border-top: 1px solid var(--kirma-border-subtle);
+  border-bottom: 1px solid var(--kirma-border-subtle);
+}
+
+.needs-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.need-card {
+  background: var(--kirma-bg-main);
+  border: 2px solid var(--kirma-border-main);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.need-card:hover {
+  border-color: var(--kirma-green-700);
+  background: var(--kirma-green-50);
+}
+
+.need-card.active {
+  border-color: var(--kirma-green-700);
+  background: var(--kirma-green-100);
+  box-shadow: var(--shadow-sm);
+}
+
+.need-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.need-name {
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--kirma-text-main);
+  margin-bottom: 0.25rem;
+}
+
+.need-hint {
+  font-size: 0.75rem;
+  color: var(--kirma-text-muted);
+}
+
+.finder-results-box {
+  background: var(--kirma-bg-main);
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+}
+
+.finder-criteria-summary {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--kirma-text-muted);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px dashed var(--kirma-border-main);
+}
+
+/* Cómo Trabajamos & Envíos */
+.process-section {
+  padding: 4.5rem 0;
+  border-bottom: 1px solid var(--kirma-border-subtle);
+}
+
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.step-card {
+  background: var(--kirma-bg-surface);
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  position: relative;
+}
+
+.step-num {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--kirma-green-700);
+  margin-bottom: 0.5rem;
+}
+
+.step-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.step-desc {
+  font-size: 0.8125rem;
+  color: var(--kirma-text-muted);
+  line-height: 1.4;
+}
+
+.shipping-callout {
+  margin-top: 3rem;
+  background: var(--kirma-earth-50);
+  border: 1px solid var(--kirma-earth-500);
+  border-left: 4px solid var(--kirma-earth-700);
+  border-radius: var(--radius-sm);
+  padding: 1.5rem;
+}
+
+.shipping-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--kirma-earth-900);
+  margin-bottom: 0.5rem;
+}
+
+/* Centro de Soporte KIRMA */
+.support-section {
+  padding: 4.5rem 0;
+  background: var(--kirma-bg-surface);
+}
+
+.backup-alert-box {
+  background: #fef2f2;
+  border: 2px solid #ef4444;
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.backup-alert-title {
+  color: #991b1b;
+  font-weight: 800;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.backup-alert-text {
+  color: #7f1d1d;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.support-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.support-step-item {
+  background: var(--kirma-bg-main);
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+}
+
+.support-tools-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.tool-card {
+  background: var(--kirma-bg-main);
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-sm);
+  padding: 1.5rem;
+}
+
+/* Garantía KIRMA */
+.warranty-section {
+  padding: 4.5rem 0;
+  border-top: 1px solid var(--kirma-border-subtle);
+  border-bottom: 1px solid var(--kirma-border-subtle);
+}
+
+.warranty-core-card {
+  background: var(--kirma-green-900);
+  color: #ffffff;
+  padding: 2.5rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 2.5rem;
+}
+
+.warranty-badge-big {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #34d399;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.75rem;
+}
+
+.warranty-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.warranty-card {
+  background: var(--kirma-bg-surface);
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-sm);
+  padding: 1.5rem;
+}
+
+/* Nosotros */
+.about-section {
+  padding: 4.5rem 0;
+  background: var(--kirma-bg-cream);
+}
+
+.about-statement {
+  font-family: var(--font-editorial);
+  font-size: 1.75rem;
+  line-height: 1.4;
+  color: var(--kirma-text-main);
+  margin-bottom: 1.5rem;
+}
+
+/* Contacto y WhatsApp */
+.contact-section {
+  padding: 4.5rem 0;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.contact-channel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.channel-card {
+  background: var(--kirma-bg-surface);
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Footer */
+.site-footer {
+  background: var(--kirma-green-900);
+  color: #d1d5db;
+  padding: 4rem 0 2rem 0;
+  margin-top: auto;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 2.5rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-brand-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.footer-tagline {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: #34d399;
+  margin-bottom: 1rem;
+}
+
+.footer-col-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #ffffff;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-links a {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+.footer-bottom {
+  padding-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: #6b7280;
+  gap: 1rem;
+}

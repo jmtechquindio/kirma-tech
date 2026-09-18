@@ -1,0 +1,102 @@
+/**
+ * KIRMA — Estilos Responsivos y Optimizaciones Móviles.
+ * Enfoque Mobile-First y navegación táctil.
+ */
+
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .process-steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .main-nav {
+    display: none;
+  }
+
+  .main-nav.mobile-open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 72px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 72px);
+    background: var(--kirma-bg-surface);
+    padding: 2rem 1.5rem;
+    z-index: 4900;
+    gap: 1.5rem;
+    border-top: 1px solid var(--kirma-border-subtle);
+    overflow-y: auto;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-title {
+    font-size: 2.25rem;
+  }
+
+  .comparison-triad,
+  .benefits-grid,
+  .support-steps-grid,
+  .support-tools-row,
+  .warranty-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .process-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-trust-bar {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .catalog-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-and-status-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .compare-drawer {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    align-items: stretch;
+  }
+
+  .compare-slots {
+    flex-wrap: wrap;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}

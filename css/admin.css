@@ -1,0 +1,285 @@
+/**
+ * KIRMA — Estilos para el Módulo de Administración con IA.
+ * Estética sobria, técnica y de laboratorio.
+ */
+
+.admin-header {
+  background: var(--kirma-green-900);
+  color: #ffffff;
+  padding: 1rem 0;
+  border-bottom: 2px solid var(--kirma-green-700);
+}
+
+.admin-nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-badge {
+  background: var(--kirma-green-700);
+  color: #a7f3d0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-main {
+  padding: 2.5rem 0;
+}
+
+.admin-card {
+  background: var(--kirma-bg-surface);
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--kirma-border-subtle);
+}
+
+.admin-card-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--kirma-text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Zona de Arrastre Drag & Drop */
+.dropzone-box {
+  border: 2px dashed var(--kirma-border-main);
+  background: var(--kirma-bg-main);
+  border-radius: var(--radius-sm);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.dropzone-box:hover, .dropzone-box.dragover {
+  border-color: var(--kirma-green-700);
+  background: var(--kirma-green-50);
+}
+
+.dropzone-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.preview-container {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  align-items: flex-start;
+}
+
+.preview-image-box {
+  max-width: 400px;
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #000;
+}
+
+.preview-image-box img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Controles de Configuración de IA */
+.ai-config-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  background: var(--kirma-bg-cream);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--kirma-border-subtle);
+}
+
+.input-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--kirma-text-main);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.input-text {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-xs);
+  background: #ffffff;
+}
+
+/* Tabla de Staging / Equipos Detectados */
+.staging-table-container {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.staging-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.staging-table th {
+  background: var(--kirma-bg-main);
+  border-bottom: 2px solid var(--kirma-border-main);
+  padding: 10px 8px;
+  text-align: left;
+  font-family: var(--font-mono);
+  color: var(--kirma-text-muted);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.staging-table td {
+  border-bottom: 1px solid var(--kirma-border-subtle);
+  padding: 8px;
+  vertical-align: middle;
+}
+
+.staging-input {
+  width: 100%;
+  padding: 4px 6px;
+  font-size: 0.8125rem;
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-xs);
+  background: #ffffff;
+}
+
+.visual-preview-cell {
+  width: 70px;
+  text-align: center;
+}
+
+.visual-preview-cell svg {
+  max-height: 45px;
+  margin: 0 auto;
+}
+
+/* Estado de procesamiento */
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  padding: 8px 12px;
+  border-radius: var(--radius-xs);
+  margin-top: 1rem;
+}
+
+.status-loading {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.status-success {
+  background: var(--kirma-green-100);
+  color: var(--kirma-green-800);
+  border: 1px solid rgba(22, 78, 57, 0.2);
+}
+
+.status-error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* Pantalla de Bloqueo / Autenticación Privada */
+.auth-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--kirma-green-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 99999;
+}
+
+.auth-card {
+  background: var(--kirma-bg-surface);
+  border: 2px solid var(--kirma-border-main);
+  border-radius: var(--radius-md);
+  padding: 2.5rem;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.auth-lock-icon {
+  width: 52px;
+  height: 52px;
+  background: var(--kirma-green-100);
+  color: var(--kirma-green-800);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem auto;
+  font-size: 1.5rem;
+}
+
+.auth-title {
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--kirma-text-main);
+  margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+  font-size: 0.8125rem;
+  color: var(--kirma-text-muted);
+  margin-bottom: 1.75rem;
+  line-height: 1.4;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+
+.auth-error {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 8px 12px;
+  font-size: 0.8125rem;
+  border-radius: var(--radius-xs);
+  display: none;
+}

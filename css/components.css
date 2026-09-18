@@ -1,0 +1,616 @@
+/**
+ * KIRMA — Componentes de Diseño.
+ * Botones, Ficha KIRMA, Kirma Check, Badges, Modales y Comparador.
+ */
+
+/* Botones Principales */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+}
+
+.btn-lg {
+  padding: 0.875rem 2rem;
+  font-size: 0.9375rem;
+}
+
+.btn-primary {
+  background-color: var(--kirma-green-700);
+  color: #ffffff;
+  border-color: var(--kirma-green-800);
+}
+
+.btn-primary:hover {
+  background-color: var(--kirma-green-600);
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background-color: var(--kirma-bg-surface);
+  color: var(--kirma-text-main);
+  border-color: var(--kirma-border-main);
+}
+
+.btn-secondary:hover {
+  background-color: var(--kirma-bg-cream);
+  border-color: var(--kirma-border-dark);
+}
+
+.btn-earth {
+  background-color: var(--kirma-earth-700);
+  color: #ffffff;
+  border-color: var(--kirma-earth-800);
+}
+
+.btn-earth:hover {
+  background-color: var(--kirma-earth-600);
+  color: #ffffff;
+}
+
+.btn-whatsapp {
+  background-color: var(--color-whatsapp);
+  color: #0b261b;
+  border-color: rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+}
+
+.btn-whatsapp:hover {
+  background-color: var(--color-whatsapp-hover);
+  color: #0b261b;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+}
+
+/* Badges de Disponibilidad y Estado */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius-xs);
+  border: 1px solid transparent;
+}
+
+.badge-disponible {
+  background-color: var(--kirma-green-100);
+  color: var(--kirma-green-800);
+  border-color: rgba(22, 78, 57, 0.2);
+}
+
+.badge-disponible::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: var(--kirma-green-600);
+  border-radius: 50%;
+}
+
+.badge-ultimas {
+  background-color: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.badge-ultimas::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: #d97706;
+  border-radius: 50%;
+}
+
+.badge-agotado {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border-color: #e5e7eb;
+}
+
+.badge-grado {
+  background-color: var(--kirma-bg-cream);
+  color: var(--kirma-earth-800);
+  border-color: var(--kirma-border-main);
+  font-weight: 600;
+}
+
+/* Asset Tag Nomenclador */
+.asset-tag {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--kirma-green-700);
+  background-color: var(--kirma-green-50);
+  border: 1px dashed var(--kirma-green-700);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Tarjeta de Producto en Catálogo */
+.product-card {
+  background: var(--kirma-bg-surface);
+  border: 1px solid var(--kirma-border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  position: relative;
+}
+
+.product-card:hover {
+  border-color: var(--kirma-border-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.product-card-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--kirma-border-subtle);
+  background: var(--kirma-bg-main);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-card-visual {
+  padding: 1.5rem;
+  background: #fdfdfc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  border-bottom: 1px solid var(--kirma-border-subtle);
+  position: relative;
+}
+
+.product-card-visual img,
+.product-card-visual svg {
+  max-height: 160px;
+  width: auto;
+  object-fit: contain;
+}
+
+.product-card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--kirma-text-main);
+  margin-bottom: 0.25rem;
+}
+
+.product-card-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--kirma-text-muted);
+  margin-bottom: 1rem;
+}
+
+/* Grilla de Especificaciones en Tarjeta */
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  background: var(--kirma-bg-cream);
+  padding: 0.875rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--kirma-border-subtle);
+  margin-bottom: 1rem;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.spec-key {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  color: var(--kirma-text-muted);
+  letter-spacing: 0.04em;
+}
+
+.spec-val {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--kirma-text-main);
+}
+
+.product-card-condition {
+  font-size: 0.8125rem;
+  color: var(--kirma-text-muted);
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  background: var(--kirma-bg-main);
+  padding: 0.625rem 0.75rem;
+  border-left: 2px solid var(--kirma-earth-600);
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+}
+
+.product-card-pricing {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--kirma-border-subtle);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.price-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  color: var(--kirma-text-muted);
+}
+
+.price-amount {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--kirma-text-main);
+  font-feature-settings: "tnum";
+}
+
+.product-card-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+}
+
+/* Botón Comparar Checkbox en Tarjeta */
+.btn-compare-toggle {
+  background: var(--kirma-bg-main);
+  border: 1px solid var(--kirma-border-main);
+  padding: 0.625rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--kirma-text-muted);
+  transition: all var(--transition-fast);
+}
+
+.btn-compare-toggle:hover {
+  background: var(--kirma-bg-cream);
+  color: var(--kirma-text-main);
+}
+
+.btn-compare-toggle.active {
+  background: var(--kirma-green-100);
+  border-color: var(--kirma-green-700);
+  color: var(--kirma-green-700);
+}
+
+/* Componente Destacado: FICHA KIRMA (Asset Card) */
+.ficha-kirma-container {
+  background: var(--kirma-bg-surface);
+  border: 2px solid var(--kirma-border-main);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.ficha-header-bar {
+  background: var(--kirma-green-900);
+  color: #ffffff;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--kirma-green-700);
+}
+
+.ficha-brand-tag {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--kirma-green-400);
+}
+
+.ficha-title-block {
+  padding: 1.5rem;
+  background: var(--kirma-bg-main);
+  border-bottom: 1px solid var(--kirma-border-main);
+}
+
+.ficha-model {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--kirma-text-main);
+  margin-bottom: 0.25rem;
+}
+
+.ficha-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--kirma-text-muted);
+}
+
+/* Componente KIRMA CHECK */
+.kirma-check-box {
+  background: var(--kirma-bg-surface);
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.kirma-check-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed var(--kirma-border-main);
+}
+
+.kirma-check-title {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--kirma-green-700);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kirma-check-disclaimer {
+  font-size: 0.75rem;
+  color: var(--kirma-text-muted);
+  font-style: italic;
+}
+
+.kirma-check-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--kirma-bg-main);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--kirma-border-subtle);
+  font-size: 0.8125rem;
+}
+
+.check-icon {
+  color: var(--kirma-green-600);
+  font-weight: 800;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.check-text strong {
+  color: var(--kirma-text-main);
+  display: block;
+}
+
+.check-text span {
+  color: var(--kirma-text-muted);
+  font-size: 0.75rem;
+}
+
+/* Modal y Drawers */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(17, 25, 21, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-dialog {
+  background: var(--kirma-bg-surface);
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(12px);
+  transition: transform var(--transition-fast);
+  position: relative;
+}
+
+.modal-backdrop.open .modal-dialog {
+  transform: translateY(0);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--kirma-border-main);
+  background: var(--kirma-bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--kirma-text-muted);
+  transition: all var(--transition-fast);
+  z-index: 10;
+}
+
+.modal-close-btn:hover {
+  background: var(--kirma-bg-cream);
+  color: var(--kirma-text-main);
+}
+
+/* Barra Flotante de Comparación */
+.compare-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--kirma-green-900);
+  color: #ffffff;
+  padding: 0.875rem 1.5rem;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
+  z-index: 8000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transform: translateY(100%);
+  transition: transform var(--transition-normal);
+}
+
+.compare-drawer.visible {
+  transform: translateY(0);
+}
+
+.compare-drawer-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.compare-slots {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.compare-chip {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.compare-chip-remove {
+  cursor: pointer;
+  opacity: 0.7;
+  font-weight: bold;
+}
+
+.compare-chip-remove:hover {
+  opacity: 1;
+}
+
+/* Acordeón de FAQ */
+.faq-accordion {
+  border: 1px solid var(--kirma-border-main);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--kirma-bg-surface);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--kirma-border-subtle);
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-trigger {
+  width: 100%;
+  text-align: left;
+  padding: 1.25rem 1.5rem;
+  background: transparent;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--kirma-text-main);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.faq-trigger:hover {
+  background-color: var(--kirma-bg-main);
+}
+
+.faq-icon {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  color: var(--kirma-green-700);
+  transition: transform var(--transition-fast);
+}
+
+.faq-item.open .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-content {
+  padding: 0 1.5rem 1.25rem 1.5rem;
+  color: var(--kirma-text-body);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  display: none;
+}
+
+.faq-item.open .faq-content {
+  display: block;
+}
