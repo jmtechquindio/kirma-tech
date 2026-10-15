@@ -41,7 +41,27 @@ export const FinderService = {
         }));
       }
     } catch (e) {
-      console.error("Finder API Error:", e);
+      console.warn("Finder usando inventario estático:", e);
+    }
+
+    if (!this.items || this.items.length === 0) {
+      const staticInv = (await import("../data/inventory.js")).getLiveInventory();
+      this.items = staticInv.map(p => ({
+        ...p,
+        marca: p.marca,
+        modelo: p.modelo,
+        precio: p.precio_cop,
+        etiqueta: p.condicion_estetica?.grado || 'RECOMENDADO',
+        perfiles: p.ideal_para || [],
+        especificaciones: {
+          procesador: p.procesador,
+          ram: p.ram,
+          almacenamiento: p.almacenamiento
+        },
+        imagenes: {
+          principal: getAssetPath(`assets/images/laptops/${p.id.toLowerCase()}-front.svg`)
+        }
+      }));
     }
 
     this.bindButtons();

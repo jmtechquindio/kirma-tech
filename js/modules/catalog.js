@@ -1,6 +1,7 @@
 import { WhatsAppService } from "./whatsapp.js";
 import { ComparatorService } from "./comparator.js";
 import { ProductModalService } from "./product_modal.js";
+import { getLiveInventory } from "../data/inventory.js";
 
 /**
  * Resuelve una ruta de asset relativa a la raíz del documento.
@@ -24,7 +25,7 @@ export const CatalogService = {
       this.container.innerHTML = '<div style="text-align:center; padding: 2rem; grid-column: 1/-1;">Cargando catálogo...</div>';
       
       const res = await fetch('/api/products?status=activo&limit=100');
-      if (!res.ok) throw new Error('Error al conectar con el servidor.');
+      if (!res.ok) throw new Error('API no disponible');
       
       const data = await res.json();
       
@@ -49,14 +50,29 @@ export const CatalogService = {
         }
       }));
       
-      this.filteredItems = [...this.items];
-      
     } catch (err) {
-      console.error(err);
-      this.container.innerHTML = '<div style="text-align:center; padding: 2rem; grid-column: 1/-1; color: red;">No se pudo cargar el catálogo. Intenta nuevamente.</div>';
-      return;
+      // Fallback estático para GitHub Pages o modo offline
+      const staticInv = getLiveInventory();
+      this.items = staticInv.map(p => ({
+        id: p.id,
+        marca: p.marca,
+        modelo: p.modelo,
+        etiqueta: p.condicion_estetica?.grado || 'DISPONIBLE',
+        precio: p.precio_cop,
+        price_format: p.precio_formato,
+        especificaciones: {
+          procesador: p.procesador,
+          ram: p.ram,
+          almacenamiento: p.almacenamiento,
+          pantalla: p.pantalla
+        },
+        imagenes: {
+          principal: getAssetPath(`assets/images/laptops/${p.id.toLowerCase()}-front.svg`)
+        }
+      }));
     }
-
+    
+    this.filteredItems = [...this.items];
     this.bindFilters();
     this.render();
   },
