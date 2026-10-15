@@ -187,8 +187,8 @@ export const ComparatorService = {
               <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--kirma-text-muted); font-family: var(--font-mono); font-size: 0.75rem;">ESTADO Y CONDICIÓN</td>
               ${items.map(item => `
                 <td style="padding: 0.75rem 1rem;">
-                  <span class="badge badge-grado" style="margin-bottom: 4px;">${item.condicion_estetica.grado}</span>
-                  <div style="font-size: 0.75rem; color: var(--kirma-text-body);">${item.condicion_estetica.resumen}</div>
+                  <span class="badge badge-grado" style="margin-bottom: 4px;">${item.condicion_estetica?.grado || item.aesthetic_grade || 'Grado A'}</span>
+                  <div style="font-size: 0.75rem; color: var(--kirma-text-body);">${item.condicion_estetica?.resumen || item.aesthetic_summary || 'Equipo corporativo verificado'}</div>
                 </td>
               `).join("")}
             </tr>
@@ -197,8 +197,8 @@ export const ComparatorService = {
               <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--kirma-text-muted); font-family: var(--font-mono); font-size: 0.75rem;">BATERÍA</td>
               ${items.map(item => `
                 <td style="padding: 0.75rem 1rem;">
-                  <strong>${item.bateria.salud}</strong>
-                  <div style="font-size: 0.75rem; color: var(--kirma-text-muted);">${item.bateria.estado_general}</div>
+                  <strong>${item.bateria?.salud || (item.battery_pct ? item.battery_pct + '%' : 'Óptima')}</strong>
+                  <div style="font-size: 0.75rem; color: var(--kirma-text-muted);">${item.bateria?.estado_general || 'Retención comprobada con diagnóstico oficial.'}</div>
                 </td>
               `).join("")}
             </tr>

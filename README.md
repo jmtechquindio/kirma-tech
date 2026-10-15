@@ -116,28 +116,38 @@ kirma-tech/
 
 ---
 
-## 4. Cómo Ejecutar el Proyecto Localmente
+## 4. Arquitectura y Backend KIRMA V2
 
-El proyecto está construido con estándares web modernos nativos (HTML5 semántico, CSS3 modular con variables y JavaScript ES Modules), lo que garantiza **cero dependencias frágiles, carga instantánea y máxima compatibilidad**:
+KIRMA V2 cuenta con una arquitectura robusta basada en **FastAPI (Python)** y **SQLite con WAL y Foreign Keys**, complementada por un frontend modular en JavaScript ES Modules:
 
-### Opción 1: Servidor Local con Python (Recomendado)
-Desde la terminal en el directorio del proyecto:
-```powershell
-python -m http.server 8000
-```
-Luego abre en tu navegador:
-```text
-http://localhost:8000
-```
-
-### Opción 2: Apertura directa
-Puedes abrir directamente el archivo `index.html` en cualquier navegador moderno (Chrome, Edge, Firefox, Safari).
+- **Backend FastAPI:** `backend/main.py`
+  - Autenticación administrativa con JWT y bcrypt (`/api/auth/login`).
+  - Catálogo público con filtros y paginación (`/api/products`).
+  - Módulo de importación inteligente de listas de precios PDF/JPG/PNG con extracción multimodal Gemini y parser heurístico determinista (`/api/admin/imports`).
+  - Historial auditable de precios (`/api/admin/price-history/{id}`) con fuente de archivo y motivo.
+  - Registro de auditoría administrativa (`audit_log`).
+- **Línea Oficial de WhatsApp:** **+57 314 881 3857** (`573148813857`).
 
 ---
 
-## 5. Hoja de Ruta para Ecommerce y Panel Administrativo
+## 5. Cómo Ejecutar el Proyecto Localmente
 
-La arquitectura de datos (`inventory.js` e `internal_records.js`) ha sido diseñada para una fácil migración a un backend de producción (Node.js/Express, FastAPI o base de datos PostgreSQL/Supabase):
-1. **Pasarela de pagos colombiana:** Integración con Wompi, ePayco o PayU para transacciones con PSE, tarjetas de crédito y transferencias bancarias.
-2. **Panel de administración:** CRUD para alta de nuevos lotes, edición de precios en COP, actualización de estados de disponibilidad (`DISPONIBLE` -> `AGOTADO`) y carga de fotos reales por unidad.
-3. **Gestión de garantías y seriales:** Módulo de radicación de casos vinculado a los formatos técnicos internos (FOR-GAR-001 a 003).
+### Opción 1: Servidor KIRMA V2 (FastAPI + Frontend)
+Desde la terminal en el directorio raíz del proyecto:
+```powershell
+python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+```
+o ejecutando el script:
+```powershell
+.\start.bat
+```
+Luego abre en tu navegador:
+- **Sitio Público:** `http://localhost:8000/`
+- **Panel Administrativo:** `http://localhost:8000/admin` (Credenciales por defecto: `admin` / `kirma2026`)
+- **Documentación Interactiva Swagger:** `http://localhost:8000/api/docs`
+
+### Opción 2: Ejecución de la Suite de Pruebas Automatizadas
+```powershell
+$env:PYTHONPATH="backend"
+python test_suite_complete.py
+```

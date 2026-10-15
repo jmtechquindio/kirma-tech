@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+.venv/
+venv/
+ENV/
+
+# Archivos pesados subidos en pruebas
+backend/uploads/*.pdf
+backend/uploads/*.jpeg
+backend/uploads/*.jpg
+backend/uploads/*.png
+backend/uploads/*.webp
+!backend/uploads/.gitkeep
+
+# Base de datos local transaccional
+# kirma.db se preserva localmente
+*.db-shm
+*.db-wal
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

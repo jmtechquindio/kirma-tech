@@ -1,242 +1,211 @@
-/**
- * KIRMA — Modal de Ficha Técnica Individual ("FICHA KIRMA").
- * Presenta inspección punto por punto, Kirma Check honesto,
- * estado físico real sin ocultar imperfecciones, qué incluye y conversión a WhatsApp.
- */
-
-import { INVENTORY, getLiveInventory } from "../data/inventory.js";
 import { WhatsAppService } from "./whatsapp.js";
 
+/**
+ * Resuelve una ruta de asset relativa a la raíz del documento.
+ */
+function getAssetPath(relativePath) {
+  const base = document.querySelector("base")?.href || 
+    window.location.href.replace(/\/[^/]*$/, "/");
+  return new URL(relativePath, base).href;
+}
+
 export const ProductModalService = {
-  currentProduct: null,
+  modalId: "product-modal",
+  
+  async open(productId) {
+    let product;
+    
+    // Fetch product detail from API
+    try {
+      const res = await fetch(`/api/products/${productId}`);
+      if (!res.ok) throw new Error('Producto no encontrado');
+      
+      const p = await res.json();
+      
+      // Mapear al formato que espera el frontend
+      product = {
+        id: p.id,
+        marca: p.brand,
+        modelo: p.model,
+        linea: p.line,
+        precio: p.sale_price,
+        price_format: p.price_format,
+        garantia: p.warranty,
+        estado: {
+          grado: p.aesthetic_grade,
+          resumen: p.aesthetic_summary
+        },
+        especificaciones: {
+          procesador: p.processor,
+          detalle_cpu: p.processor_detail,
+          ram: p.ram_label,
+          almacenamiento: p.storage_label,
+          pantalla: p.screen_label,
+          graficos: p.gpu,
+          so: p.os
+        },
+        kirma_check: {},
+        imagenes: {
+          principal: p.images && p.images.length > 0 ? getAssetPath(p.images[0].path) : getAssetPath(`assets/images/laptops/${p.id.toLowerCase()}-front.svg`),
+          teclado: getAssetPath(`assets/images/laptops/${p.id.toLowerCase()}-open.svg`),
+          puertos: getAssetPath(`assets/images/laptops/${p.id.toLowerCase()}-ports.svg`)
+        }
+      };
 
-  open(productId) {
-    const product = getLiveInventory().find(item => item.id === productId);
-    if (!product) return;
+      // Mapear Kirma Check
+      if (p.kirma_check) {
+        p.kirma_check.forEach(chk => {
+          product.kirma_check[chk.check_key] = {
+            ok: chk.ok === 1,
+            label: chk.label,
+            note: chk.note
+          };
+        });
+      }
 
-    this.currentProduct = product;
-    const modalBackdrop = document.getElementById("product-detail-modal");
-    const modalBody = document.getElementById("product-detail-content");
+    } catch (err) {
+      console.error(err);
+      alert('Error al cargar la ficha del producto.');
+      return;
+    }
 
-    if (!modalBackdrop || !modalBody) return;
+    this.render(product);
+    this.bindEvents(product);
+  },
 
-    const waProductUrl = WhatsAppService.forProduct(product);
+  render(product) {
+    const modal = document.getElementById(this.modalId);
+    if (!modal) return;
+    
+    // Generar badges de Kirma Check
+    const checks = Object.values(product.kirma_check || {});
+    const checksHtml = checks.map(check => `
+      <div class="check-item ${check.ok ? 'ok' : 'warn'}">
+        <div class="check-icon">
+          ${check.ok 
+            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>' 
+            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'}
+        </div>
+        <div class="check-content">
+          <span class="check-label">${check.label}</span>
+          ${check.note ? `<span class="check-note">${check.note}</span>` : ''}
+        </div>
+      </div>
+    `).join('');
 
-    modalBody.innerHTML = `
-      <div class="ficha-kirma-container">
-        <!-- Barra de Cabecera Asset Tag -->
-        <div class="ficha-header-bar">
-          <div>
-            <span class="ficha-brand-tag">[ FICHA TÉCNICA KIRMA ]</span>
-            <span style="font-family: var(--font-mono); font-size: 0.8125rem; margin-left: 8px; color: #d1fae5;">CORPORATE REFURBISHED</span>
+    // Prevenir undefined
+    const detailCpu = product.especificaciones.detalle_cpu || product.especificaciones.procesador;
+
+    // Actualizar contenido
+    const content = `
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title">${product.marca} ${product.modelo}</h2>
+          <span class="modal-subtitle">${product.id} | ${product.linea || ''}</span>
+        </div>
+        <button class="btn-close-modal" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-gallery">
+          <img src="${product.imagenes.principal}" alt="Vista frontal" class="gallery-main" id="modal-main-img">
+          <div class="gallery-thumbs">
+            <button class="thumb-btn active"><img src="${product.imagenes.principal}" alt="Frontal"></button>
+            <button class="thumb-btn"><img src="${product.imagenes.teclado}" alt="Teclado" onerror="this.parentElement.style.display='none'"></button>
+            <button class="thumb-btn"><img src="${product.imagenes.puertos}" alt="Puertos" onerror="this.parentElement.style.display='none'"></button>
           </div>
-          <span class="asset-tag" style="background: #ffffff; color: var(--kirma-green-900);">${product.tag}</span>
         </div>
 
-        <!-- Título y Modelo -->
-        <div class="ficha-title-block">
-          <h2 class="ficha-model">${product.marca} ${product.modelo}</h2>
-          <div class="ficha-meta">
-            <span><strong>Línea:</strong> ${product.linea}</span>
-            <span>•</span>
-            <span><strong>Estado:</strong> ${product.estado}</span>
-            <span>•</span>
-            <span><strong>Garantía:</strong> 6 Meses</span>
-            <span>•</span>
-            <span class="badge badge-disponible">${product.disponibilidad}</span>
-          </div>
-        </div>
-
-        <!-- Cuerpo de la Ficha en dos columnas -->
-        <div style="padding: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div class="modal-info">
           
-          <!-- Columna Izquierda: Galería y Fotos Reales del Equipo -->
-          <div>
-            <div style="background: #ffffff; border: 1px solid var(--kirma-border-main); border-radius: var(--radius-sm); padding: 1rem; text-align: center; margin-bottom: 1rem;">
-              <img id="main-product-image" 
-                   src="assets/images/laptops/${product.id.toLowerCase()}-front.svg" 
-                   alt="${product.marca} ${product.modelo} frontal" 
-                   style="max-height: 240px; margin: 0 auto;" />
+          <div class="info-card grade-card">
+            <div class="grade-header">
+              <h3>Estado Estético</h3>
+              <span class="grade-badge">${product.estado.grado}</span>
             </div>
+            <p>${product.estado.resumen}</p>
+          </div>
 
-            <!-- Miniaturas de Inspección Visual -->
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 1.5rem;">
-              <button class="gallery-thumb active" data-src="assets/images/laptops/${product.id.toLowerCase()}-front.svg" style="border: 2px solid var(--kirma-green-700); padding: 4px; background: #fff; cursor: pointer; border-radius: 2px;">
-                <span style="font-family: var(--font-mono); font-size: 0.625rem; display: block;">FRONTAL</span>
-              </button>
-              <button class="gallery-thumb" data-src="assets/images/laptops/${product.id.toLowerCase()}-keyboard.svg" style="border: 1px solid var(--kirma-border-main); padding: 4px; background: #fff; cursor: pointer; border-radius: 2px;">
-                <span style="font-family: var(--font-mono); font-size: 0.625rem; display: block;">TECLADO</span>
-              </button>
-              <button class="gallery-thumb" data-src="assets/images/laptops/${product.id.toLowerCase()}-ports.svg" style="border: 1px solid var(--kirma-border-main); padding: 4px; background: #fff; cursor: pointer; border-radius: 2px;">
-                <span style="font-family: var(--font-mono); font-size: 0.625rem; display: block;">PUERTOS</span>
-              </button>
-              <button class="gallery-thumb" data-src="assets/images/laptops/${product.id.toLowerCase()}-lid.svg" style="border: 1px solid var(--kirma-border-main); padding: 4px; background: #fff; cursor: pointer; border-radius: 2px;">
-                <span style="font-family: var(--font-mono); font-size: 0.625rem; display: block;">TAPA</span>
-              </button>
-            </div>
+          <div class="info-card specs-detailed">
+            <h3>Especificaciones Técnicas</h3>
+            <dl>
+              <dt>Procesador</dt><dd>${detailCpu}</dd>
+              <dt>Memoria RAM</dt><dd>${product.especificaciones.ram}</dd>
+              <dt>Almacenamiento</dt><dd>${product.especificaciones.almacenamiento}</dd>
+              <dt>Pantalla</dt><dd>${product.especificaciones.pantalla}</dd>
+              <dt>Gráficos</dt><dd>${product.especificaciones.graficos || 'Integrados'}</dd>
+              <dt>Sistema</dt><dd>${product.especificaciones.so}</dd>
+            </dl>
+          </div>
 
-            <!-- Qué Incluye la Entrega -->
-            <div style="background: var(--kirma-bg-main); border: 1px solid var(--kirma-border-main); border-radius: var(--radius-sm); padding: 1.25rem;">
-              <h4 style="font-size: 0.875rem; text-transform: uppercase; font-family: var(--font-mono); color: var(--kirma-green-700); margin-bottom: 0.75rem;">
-                ¿QUÉ INCLUYE ESTA UNIDAD?
-              </h4>
-              <ul style="list-style: none; font-size: 0.8125rem; color: var(--kirma-text-body); display: flex; flex-direction: column; gap: 6px;">
-                ${product.incluye.map(item => `
-                  <li style="display: flex; align-items: flex-start; gap: 8px;">
-                    <span style="color: var(--kirma-green-700); font-weight: bold;">✓</span>
-                    <span>${item}</span>
-                  </li>
-                `).join("")}
-              </ul>
+          <div class="info-card kirma-check-card">
+            <h3><span style="color:var(--kirma-primary)">KIRMA</span> Check</h3>
+            <p style="font-size:0.875rem; color:var(--kirma-text-muted); margin-bottom:1rem;">Certificación de calidad técnica. Todo probado y funcional.</p>
+            <div class="checks-grid">
+              ${checksHtml}
             </div>
           </div>
 
-          <!-- Columna Derecha: Ficha Técnica Editorial y Precios -->
-          <div>
-            <!-- Especificaciones Técnicas Principales -->
-            <div style="background: var(--kirma-bg-cream); border: 1px solid var(--kirma-border-main); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.25rem;">
-              <h4 style="font-size: 0.8125rem; font-family: var(--font-mono); text-transform: uppercase; color: var(--kirma-text-muted); margin-bottom: 0.75rem; letter-spacing: 0.04em;">
-                ESPECIFICACIONES DEL FABRICANTE
-              </h4>
-              <table style="width: 100%; font-size: 0.8125rem; border-collapse: collapse;">
-                <tr style="border-bottom: 1px solid var(--kirma-border-subtle);">
-                  <td style="padding: 6px 0; color: var(--kirma-text-muted); width: 35%;">Procesador</td>
-                  <td style="padding: 6px 0; font-weight: 600;">${product.procesador} (${product.procesador_detalle})</td>
-                </tr>
-                <tr style="border-bottom: 1px solid var(--kirma-border-subtle);">
-                  <td style="padding: 6px 0; color: var(--kirma-text-muted);">Memoria RAM</td>
-                  <td style="padding: 6px 0; font-weight: 600;">${product.ram} (${product.ram_detalle})</td>
-                </tr>
-                <tr style="border-bottom: 1px solid var(--kirma-border-subtle);">
-                  <td style="padding: 6px 0; color: var(--kirma-text-muted);">Almacenamiento</td>
-                  <td style="padding: 6px 0; font-weight: 600;">${product.almacenamiento} (${product.almacenamiento_detalle})</td>
-                </tr>
-                <tr style="border-bottom: 1px solid var(--kirma-border-subtle);">
-                  <td style="padding: 6px 0; color: var(--kirma-text-muted);">Pantalla</td>
-                  <td style="padding: 6px 0; font-weight: 600;">${product.pantalla} — ${product.pantalla_detalle}</td>
-                </tr>
-                <tr style="border-bottom: 1px solid var(--kirma-border-subtle);">
-                  <td style="padding: 6px 0; color: var(--kirma-text-muted);">Gráficos</td>
-                  <td style="padding: 6px 0; font-weight: 600;">${product.gpu}</td>
-                </tr>
-                <tr style="border-bottom: 1px solid var(--kirma-border-subtle);">
-                  <td style="padding: 6px 0; color: var(--kirma-text-muted);">Sistema Operativo</td>
-                  <td style="padding: 6px 0; font-weight: 600;">${product.sistema_operativo}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 6px 0; color: var(--kirma-text-muted);">Peso y Chasis</td>
-                  <td style="padding: 6px 0; font-weight: 600;">${product.peso} • ${product.material}</td>
-                </tr>
-              </table>
-            </div>
-
-            <!-- Condición Física Honesta y Transparente -->
-            <div style="background: var(--kirma-bg-surface); border: 1px solid var(--kirma-earth-500); border-left: 4px solid var(--kirma-earth-700); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.25rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <h4 style="font-size: 0.8125rem; font-family: var(--font-mono); text-transform: uppercase; color: var(--kirma-earth-900); font-weight: 700;">
-                  ESTADO ESTÉTICO HONESTO
-                </h4>
-                <span class="badge badge-grado">${product.condicion_estetica.grado}</span>
-              </div>
-              <p style="font-size: 0.8125rem; color: var(--kirma-text-body); margin-bottom: 0.5rem;">
-                ${product.condicion_estetica.detalles}
-              </p>
-              ${product.condicion_estetica.marcas_visibles && product.condicion_estetica.marcas_visibles.length > 0 ? `
-                <div style="font-size: 0.75rem; color: var(--kirma-text-muted); background: var(--kirma-bg-main); padding: 6px 10px; border-radius: 2px;">
-                  <strong>Marcas visibles reportadas:</strong>
-                  <ul style="margin-left: 1rem; margin-top: 4px;">
-                    ${product.condicion_estetica.marcas_visibles.map(m => `<li>${m}</li>`).join("")}
-                  </ul>
-                </div>
-              ` : ''}
-            </div>
-
-            <!-- Estado de Batería y Cargador -->
-            <div style="background: var(--kirma-bg-main); border: 1px solid var(--kirma-border-main); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.5rem;">
-              <h4 style="font-size: 0.8125rem; font-family: var(--font-mono); text-transform: uppercase; color: var(--kirma-text-muted); margin-bottom: 0.5rem;">
-                BATERÍA & CARGADOR
-              </h4>
-              <p style="font-size: 0.8125rem; margin-bottom: 4px;">
-                <strong>Salud de Batería:</strong> ${product.bateria.salud} (${product.bateria.estado_general})
-              </p>
-              <p style="font-size: 0.75rem; color: var(--kirma-text-muted); margin-bottom: 8px;">
-                <em>${product.bateria.observacion}</em>
-              </p>
-              <p style="font-size: 0.8125rem;">
-                <strong>Cargador:</strong> ${product.cargador}
-              </p>
-            </div>
-
-            <!-- Bloque de Precio y Conversión -->
-            <div style="padding: 1.25rem; background: var(--kirma-green-50); border: 1px solid var(--kirma-green-700); border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 0.75rem;">
-              <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                <span class="price-label">Precio Final Colombia:</span>
-                <div class="price-amount" style="color: var(--kirma-green-900);">${product.precio_formato}</div>
-              </div>
-              <p style="font-size: 0.75rem; color: var(--kirma-text-muted); margin: 0;">
-                ✓ 6 Meses de garantía por escrito (Ley 1480 de 2011).<br>
-                ✓ Envíos nacionales con guía de rastreo y embalaje industrial seguro.
-              </p>
-              <a href="${waProductUrl}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-lg" style="width: 100%; text-align: center;">
-                QUIERO ESTE EQUIPO (WHATSAPP)
-              </a>
-            </div>
-
-          </div>
         </div>
+      </div>
 
-        <!-- Sección KIRMA CHECK Punto por Punto -->
-        <div style="padding: 0 1.5rem 1.5rem 1.5rem;">
-          <div class="kirma-check-box">
-            <div class="kirma-check-header">
-              <span class="kirma-check-title">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-                KIRMA CHECK — REPORTE DE COMPROBACIÓN TÉCNICA (10/10)
-              </span>
-              <span class="kirma-check-disclaimer">
-                Solo se certifican pruebas efectivamente realizadas en laboratorio
-              </span>
-            </div>
-
-            <div class="kirma-check-grid">
-              ${Object.entries(product.kirma_check).map(([k, test]) => `
-                <div class="check-item">
-                  <span class="check-icon">✓</span>
-                  <div class="check-text">
-                    <strong>${test.etiqueta || k.toUpperCase()}</strong>
-                    <span>${test.nota}</span>
-                  </div>
-                </div>
-              `).join("")}
-            </div>
-          </div>
+      <div class="modal-footer">
+        <div class="modal-price">
+          <span class="price-val">${product.price_format || 'Consultar'}</span>
+          <span class="price-lbl">${product.garantia || 'Garantía 6 Meses'}</span>
         </div>
-
+        <button class="btn btn-primary" id="btn-modal-whatsapp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Me interesa este equipo
+        </button>
       </div>
     `;
 
-    // Conectar galería de imágenes
-    const mainImg = modalBody.querySelector("#main-product-image");
-    modalBody.querySelectorAll(".gallery-thumb").forEach(thumb => {
-      thumb.addEventListener("click", (e) => {
-        modalBody.querySelectorAll(".gallery-thumb").forEach(t => {
-          t.style.borderColor = "var(--kirma-border-main)";
-        });
-        thumb.style.borderColor = "var(--kirma-green-700)";
-        const newSrc = thumb.getAttribute("data-src");
-        if (mainImg && newSrc) {
-          mainImg.src = newSrc;
-        }
-      });
+    modal.querySelector('.modal-content').innerHTML = content;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  },
+
+  bindEvents(product) {
+    const modal = document.getElementById(this.modalId);
+    
+    // Cerrar
+    const closeBtn = modal.querySelector('.btn-close-modal');
+    const closeAction = () => {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    };
+
+    closeBtn.addEventListener('click', closeAction);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeAction();
     });
 
-    modalBackdrop.classList.add("open");
+    // Añadir soporte para cerrar con ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeAction();
+      }
+    }, { once: true });
 
-    const closeBtn = document.getElementById("btn-close-product-modal");
-    if (closeBtn) {
-      closeBtn.onclick = () => modalBackdrop.classList.remove("open");
+    // WhatsApp
+    const waBtn = modal.querySelector('#btn-modal-whatsapp');
+    if (waBtn) {
+      waBtn.addEventListener('click', () => {
+        WhatsAppService.openChat(product);
+      });
     }
+
+    // Galería
+    const mainImg = modal.querySelector('#modal-main-img');
+    const thumbs = modal.querySelectorAll('.thumb-btn');
+    
+    thumbs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        thumbs.forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        mainImg.src = btn.querySelector('img').src;
+      });
+    });
   }
 };

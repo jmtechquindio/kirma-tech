@@ -55,5 +55,13 @@ export const WhatsAppService = {
     const ref = serialOrModel ? ` para el equipo ${serialOrModel}` : "";
     const text = `Hola KIRMA. Me comunico para reportar una novedad técnica cubierta por la garantía de 6 meses${ref}. Deseo registrar el caso para diagnóstico.`;
     return this.buildUrl(text);
+  },
+
+  /**
+   * Abre directamente el chat con el mensaje contextual del producto
+   */
+  openChat(product) {
+    const url = this.forProduct(product);
+    window.open(url, "_blank", "noopener,noreferrer");
   }
 };

@@ -1,250 +1,196 @@
-/**
- * KIRMA — Catálogo de Equipos Corporativos.
- * Filtrado dinámico, búsqueda instantánea, cálculo de facetas y renderizado.
- */
-
-import { INVENTORY, getLiveInventory } from "../data/inventory.js";
 import { WhatsAppService } from "./whatsapp.js";
 import { ComparatorService } from "./comparator.js";
 import { ProductModalService } from "./product_modal.js";
 
+/**
+ * Resuelve una ruta de asset relativa a la raíz del documento.
+ */
+function getAssetPath(relativePath) {
+  const base = document.querySelector("base")?.href || 
+    window.location.href.replace(/\/[^/]*$/, "/");
+  return new URL(relativePath, base).href;
+}
+
 export const CatalogService = {
-  items: getLiveInventory(),
-  filteredItems: getLiveInventory(),
-  activeFilters: {
-    search: "",
-    marca: "todas",
-    ram: "todas",
-    almacenamiento: "todas",
-    pantalla: "todas",
-    precio_max: "todos",
-    disponibilidad: "todas"
-  },
+  items: [],
+  filteredItems: [],
+  containerId: "catalog-grid",
 
-  init() {
-    this.bindEvents();
+  async init() {
+    this.container = document.getElementById(this.containerId);
+    if (!this.container) return;
+
+    try {
+      this.container.innerHTML = '<div style="text-align:center; padding: 2rem; grid-column: 1/-1;">Cargando catálogo...</div>';
+      
+      const res = await fetch('/api/products?status=activo&limit=100');
+      if (!res.ok) throw new Error('Error al conectar con el servidor.');
+      
+      const data = await res.json();
+      
+      // Adaptar el formato de la DB al formato esperado por el frontend
+      this.items = (data.products || []).map(p => ({
+        id: p.id,
+        marca: p.brand,
+        modelo: p.model,
+        etiqueta: p.badge,
+        precio: p.sale_price,
+        price_format: p.price_format,
+        especificaciones: {
+          procesador: p.processor,
+          ram: p.ram_label,
+          almacenamiento: p.storage_label,
+          pantalla: p.screen_label
+        },
+        imagenes: {
+          principal: (p.images && p.images.length > 0) 
+            ? getAssetPath(p.images[0].path) 
+            : getAssetPath(`assets/images/laptops/${p.id.toLowerCase()}-front.svg`)
+        }
+      }));
+      
+      this.filteredItems = [...this.items];
+      
+    } catch (err) {
+      console.error(err);
+      this.container.innerHTML = '<div style="text-align:center; padding: 2rem; grid-column: 1/-1; color: red;">No se pudo cargar el catálogo. Intenta nuevamente.</div>';
+      return;
+    }
+
+    this.bindFilters();
     this.render();
   },
 
-  bindEvents() {
-    const searchInput = document.getElementById("catalog-search");
-    if (searchInput) {
-      searchInput.addEventListener("input", (e) => {
-        this.activeFilters.search = e.target.value.toLowerCase().trim();
-        this.applyFilters();
+  bindFilters() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    if (!filterBtns.length) return;
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        const filter = e.target.getAttribute('data-filter');
+        this.filterByBrand(filter);
       });
-    }
-
-    const brandFilter = document.getElementById("filter-brand");
-    if (brandFilter) {
-      brandFilter.addEventListener("change", (e) => {
-        this.activeFilters.marca = e.target.value;
-        this.applyFilters();
-      });
-    }
-
-    const ramFilter = document.getElementById("filter-ram");
-    if (ramFilter) {
-      ramFilter.addEventListener("change", (e) => {
-        this.activeFilters.ram = e.target.value;
-        this.applyFilters();
-      });
-    }
-
-    const storageFilter = document.getElementById("filter-storage");
-    if (storageFilter) {
-      storageFilter.addEventListener("change", (e) => {
-        this.activeFilters.almacenamiento = e.target.value;
-        this.applyFilters();
-      });
-    }
-
-    const priceFilter = document.getElementById("filter-price");
-    if (priceFilter) {
-      priceFilter.addEventListener("change", (e) => {
-        this.activeFilters.precio_max = e.target.value;
-        this.applyFilters();
-      });
-    }
-
-    const resetBtn = document.getElementById("btn-reset-filters");
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => this.resetFilters());
-    }
-  },
-
-  applyFilters() {
-    this.filteredItems = this.items.filter(item => {
-      // Búsqueda de texto libre
-      if (this.activeFilters.search) {
-        const query = this.activeFilters.search;
-        const textBlob = `${item.marca} ${item.modelo} ${item.tag} ${item.procesador} ${item.ram} ${item.almacenamiento} ${item.linea}`.toLowerCase();
-        if (!textBlob.includes(query)) return false;
-      }
-
-      // Marca
-      if (this.activeFilters.marca !== "todas" && item.marca.toLowerCase() !== this.activeFilters.marca.toLowerCase()) {
-        return false;
-      }
-
-      // RAM
-      if (this.activeFilters.ram !== "todas") {
-        const requiredRam = parseInt(this.activeFilters.ram, 10);
-        if (item.ram_gb < requiredRam) return false;
-      }
-
-      // Almacenamiento
-      if (this.activeFilters.almacenamiento !== "todas") {
-        const requiredStorage = parseInt(this.activeFilters.almacenamiento, 10);
-        if (item.almacenamiento_gb < requiredStorage) return false;
-      }
-
-      // Precio Máximo en COP
-      if (this.activeFilters.precio_max !== "todos") {
-        const maxPrice = parseInt(this.activeFilters.precio_max, 10);
-        if (item.precio_cop > maxPrice) return false;
-      }
-
-      return true;
     });
-
-    this.render();
   },
 
-  resetFilters() {
-    this.activeFilters = {
-      search: "",
-      marca: "todas",
-      ram: "todas",
-      almacenamiento: "todas",
-      pantalla: "todas",
-      precio_max: "todos",
-      disponibilidad: "todas"
-    };
-
-    const searchInput = document.getElementById("catalog-search");
-    if (searchInput) searchInput.value = "";
-    const brandFilter = document.getElementById("filter-brand");
-    if (brandFilter) brandFilter.value = "todas";
-    const ramFilter = document.getElementById("filter-ram");
-    if (ramFilter) ramFilter.value = "todas";
-    const storageFilter = document.getElementById("filter-storage");
-    if (storageFilter) storageFilter.value = "todas";
-    const priceFilter = document.getElementById("filter-price");
-    if (priceFilter) priceFilter.value = "todos";
-
-    this.items = getLiveInventory(); this.filteredItems = [...this.items];
+  filterByBrand(brand) {
+    if (brand === 'all' || !brand) {
+      this.filteredItems = [...this.items];
+    } else {
+      this.filteredItems = this.items.filter(item => 
+        item.marca.toLowerCase() === brand.toLowerCase()
+      );
+    }
     this.render();
   },
 
   render() {
-    const grid = document.getElementById("catalog-grid");
-    const countEl = document.getElementById("catalog-count");
-
-    if (countEl) {
-      countEl.textContent = `${this.filteredItems.length} de ${this.items.length} equipos corporativos disponibles`;
-    }
-
-    if (!grid) return;
+    if (!this.container) return;
 
     if (this.filteredItems.length === 0) {
-      grid.innerHTML = `
-        <div class="empty-state-box" style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: var(--kirma-bg-surface); border: 1px dashed var(--kirma-border-main); border-radius: var(--radius-sm);">
-          <p style="font-family: var(--font-mono); color: var(--kirma-text-muted); margin-bottom: 0.5rem;">[ INVENTARIO KIRMA ]</p>
-          <h3 style="margin-bottom: 0.5rem;">No se encontraron equipos con los filtros seleccionados</h3>
-          <p style="color: var(--kirma-text-muted); max-width: 480px; margin: 0 auto 1.5rem auto;">Intenta ajustar el rango de precios o restablecer los filtros para ver las unidades corporativas actualmente revisadas.</p>
-          <button class="btn btn-secondary" id="empty-reset-btn">Restablecer todos los filtros</button>
+      this.container.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; background: var(--kirma-surface); border-radius: 1rem;">
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">No hay equipos disponibles</h3>
+          <p style="color: var(--kirma-text-muted);">Intenta seleccionar otra marca o contáctanos por WhatsApp para disponibilidad futura.</p>
         </div>
       `;
-      const emptyBtn = document.getElementById("empty-reset-btn");
-      if (emptyBtn) emptyBtn.addEventListener("click", () => this.resetFilters());
       return;
     }
 
-    grid.innerHTML = this.filteredItems.map(item => {
-      const isComparing = ComparatorService.isSelected(item.id);
-      const badgeClass = item.disponibilidad === "DISPONIBLE" ? "badge-disponible" : (item.disponibilidad === "ÚLTIMAS UNIDADES" ? "badge-ultimas" : "badge-agotado");
-      const waUrl = WhatsAppService.forProduct(item);
+    const html = this.filteredItems.map(item => {
+      const badgeHtml = item.etiqueta ? `<div class="product-badge">${item.etiqueta}</div>` : '';
+      const formattedPrice = item.price_format || 'Consultar';
 
       return `
         <article class="product-card" data-id="${item.id}">
+          ${badgeHtml}
+          
           <header class="product-card-header">
-            <span class="asset-tag">${item.tag}</span>
-            <span class="badge ${badgeClass}">${item.disponibilidad}</span>
+            <span class="product-sku">${item.id}</span>
+            <h3 class="product-title">${item.marca} ${item.modelo}</h3>
           </header>
 
           <div class="product-card-visual">
-            <img src="${item.imagenes ? item.imagenes.principal : 'assets/images/laptops/' + item.id.toLowerCase() + '-front.svg'}" 
+            <img src="${item.imagenes.principal}" 
                  alt="Portátil corporativo ${item.marca} ${item.modelo} remanufacturado" 
-                 loading="lazy" />
+                 loading="lazy"
+                 onerror="this.style.display='none'; this.parentElement.innerHTML += '<div style=\'display:flex;align-items:center;justify-content:center;height:160px;font-family:var(--font-mono);font-size:0.75rem;color:var(--kirma-text-muted);text-align:center;\'>'+this.alt+'</div>'; this.remove();" />
           </div>
 
           <div class="product-card-body">
-            <h3 class="product-card-title">${item.marca} ${item.modelo}</h3>
-            <p class="product-card-subtitle">${item.linea}</p>
+            <ul class="specs-list">
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                ${item.especificaciones.procesador}
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                ${item.especificaciones.ram}
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                ${item.especificaciones.almacenamiento}
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                ${item.especificaciones.pantalla}
+              </li>
+            </ul>
 
-            <div class="specs-grid">
-              <div class="spec-item">
-                <span class="spec-key">Procesador</span>
-                <span class="spec-val">${item.procesador}</span>
+            <div class="product-card-footer">
+              <div class="price-block">
+                <span class="price-value">${formattedPrice}</span>
+                <span class="price-label">Con garantía de 6 meses</span>
               </div>
-              <div class="spec-item">
-                <span class="spec-key">Memoria RAM</span>
-                <span class="spec-val">${item.ram}</span>
+              <div class="card-actions">
+                <button class="btn btn-outline btn-sm btn-compare" data-id="${item.id}" title="Comparar equipo">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+                </button>
+                <button class="btn btn-outline btn-sm btn-details" data-id="${item.id}" title="Ver Ficha Técnica">
+                  Ficha KIRMA
+                </button>
+                <button class="btn btn-primary btn-sm btn-buy" data-id="${item.id}">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  Consultar
+                </button>
               </div>
-              <div class="spec-item">
-                <span class="spec-key">Disco SSD</span>
-                <span class="spec-val">${item.almacenamiento}</span>
-              </div>
-              <div class="spec-item">
-                <span class="spec-key">Pantalla</span>
-                <span class="spec-val">${item.pantalla}</span>
-              </div>
-            </div>
-
-            <div class="product-card-condition">
-              <strong>Estado físico:</strong> ${item.condicion_estetica.resumen}
-            </div>
-
-            <div class="product-card-pricing">
-              <div>
-                <span class="price-label">Precio final</span>
-                <div class="price-amount">${item.precio_formato}</div>
-              </div>
-              <span class="badge badge-grado">${item.condicion_estetica.grado}</span>
-            </div>
-
-            <div class="product-card-actions">
-              <button class="btn btn-primary btn-view-product" data-id="${item.id}">
-                Ver Ficha Kirma
-              </button>
-              <button class="btn-compare-toggle ${isComparing ? 'active' : ''}" 
-                      data-id="${item.id}" 
-                      title="${isComparing ? 'Quitar del comparador' : 'Añadir al comparador'}"
-                      aria-label="Comparar este equipo">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>
-                </svg>
-              </button>
             </div>
           </div>
         </article>
       `;
-    }).join("");
+    }).join('');
 
-    // Conectar eventos de botones
-    grid.querySelectorAll(".btn-view-product").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        const id = e.currentTarget.getAttribute("data-id");
-        ProductModalService.open(id);
+    this.container.innerHTML = html;
+    this.bindActions();
+  },
+
+  bindActions() {
+    const buyBtns = this.container.querySelectorAll('.btn-buy');
+    buyBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        const product = this.items.find(p => p.id === id);
+        if (product) WhatsAppService.openChat(product);
       });
     });
 
-    grid.querySelectorAll(".btn-compare-toggle").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        const id = e.currentTarget.getAttribute("data-id");
-        ComparatorService.toggle(id);
-        this.render(); // Actualiza el estado visual del botón
+    const compareBtns = this.container.querySelectorAll('.btn-compare');
+    compareBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        const product = this.items.find(p => p.id === id);
+        if (product) ComparatorService.addProduct(product);
+      });
+    });
+
+    const detailsBtns = this.container.querySelectorAll('.btn-details');
+    detailsBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        ProductModalService.open(id);
       });
     });
   }

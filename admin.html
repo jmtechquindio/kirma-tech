@@ -2,276 +2,164 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <base href="./">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KIRMA | Acceso Privado — Módulo de Administración</title>
+  <title>KIRMA V2 | Panel Administrativo</title>
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-
-  <!-- Hojas de Estilo Base y Admin -->
+  
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/admin.css">
+  
+  <style>
+    /* Estilos V2 */
+    .admin-layout { display: flex; min-height: 100vh; }
+    .admin-sidebar { width: 250px; background: var(--kirma-surface-dark); padding: 2rem 1rem; color: white; display:flex; flex-direction:column; }
+    .admin-main { flex: 1; padding: 2rem; background: var(--kirma-bg); overflow-y: auto; }
+    .admin-nav { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 2rem; flex:1;}
+    .admin-nav-item { padding: 0.75rem 1rem; color: var(--kirma-text-muted); text-decoration: none; border-radius: 0.5rem; transition: background 0.2s;}
+    .admin-nav-item.active, .admin-nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
+    
+    .view-section { display: none; }
+    .view-section.active { display: block; }
 
-  <!-- Tipografía -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    /* Dashboard Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .stat-card { background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: var(--shadow-sm); border: 1px solid var(--kirma-border); }
+    .stat-value { font-size: 2.5rem; font-weight: 700; color: var(--kirma-primary); }
+    .stat-label { font-size: 0.875rem; color: var(--kirma-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.5rem; }
+  </style>
 </head>
 <body>
 
-  <!-- BARRERA DE SEGURIDAD / LOGIN PRIVADO (BLOQUEA LA PANTALLA SI NO HAY SESIÓN) -->
-  <div id="auth-gate-overlay" class="auth-overlay">
-    <div class="auth-card">
-      <div class="auth-lock-icon">🔒</div>
-      <h1 class="auth-title">Acceso Técnico Privado</h1>
-      <p class="auth-subtitle">
-        Este panel está restringido exclusivamente para la administración interna de inventario de <strong>KIRMA</strong>.
-      </p>
-
-      <div id="auth-error-msg" class="auth-error">
-        Contraseña incorrecta. Acceso no autorizado.
+  <!-- VIEW: LOGIN -->
+  <div id="view-login" class="view-section active">
+    <div style="max-width: 400px; margin: 4rem auto; padding: 2rem; background: white; border-radius: 1rem; box-shadow: var(--shadow-md);">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--kirma-primary)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <h1 style="margin-top: 1rem;">KIRMA Admin</h1>
       </div>
-
-      <form id="auth-form" class="auth-form" onsubmit="return false;">
-        <div>
-          <label class="input-label" for="admin-password-input">Clave Maestra de Seguridad:</label>
-          <input type="password" id="admin-password-input" class="input-text" placeholder="Ingresa tu clave de acceso" autofocus autocomplete="current-password" required>
+      <form id="login-form">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label">Usuario</label>
+          <input type="text" id="login-user" class="form-control" value="admin" required>
         </div>
-        <button type="submit" class="btn btn-primary" id="btn-submit-auth" style="width: 100%;">
-          DESBLOQUEAR PANEL
-        </button>
-        <div style="text-align: center; margin-top: 0.5rem;">
-          <a href="index.html" style="font-size: 0.75rem; color: var(--kirma-text-muted); text-decoration: underline;">
-            ← Salir a la tienda pública
-          </a>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label">Contraseña</label>
+          <input type="password" id="login-pass" class="form-control" required>
         </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Iniciar Sesión</button>
+        <div id="login-error" style="color: red; margin-top: 1rem; text-align: center; font-size: 0.875rem;"></div>
       </form>
     </div>
   </div>
 
-  <!-- CONTENIDO DEL PANEL ADMIN (OCULTO HASTA AUTENTICARSE) -->
-  <div id="admin-app-container" style="display: none;">
-
-    <!-- Header de Administración -->
-    <header class="admin-header">
-      <div class="container admin-nav-bar">
-        <div style="display: flex; align-items: baseline; gap: 12px;">
-          <span class="brand-logo" style="color: #ffffff;">KIRMA</span>
-          <span class="admin-badge">PANEL TÉCNICO PRIVADO • LABORATORIO</span>
+  <!-- VIEW: ADMIN DASHBOARD -->
+  <div id="view-admin" class="view-section">
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0 1rem;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--kirma-primary)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <strong style="font-size: 1.25rem;">KIRMA V2</strong>
         </div>
-        <div style="display: flex; gap: 0.75rem; align-items: center;">
-          <button class="btn btn-secondary btn-sm" id="btn-change-pwd" style="background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.25);">
-            🔑 Cambiar Contraseña
-          </button>
-          <button class="btn btn-secondary btn-sm" id="btn-logout" style="background: #ef4444; color: #fff; border-color: #dc2626;">
-            Cerrar Sesión ✕
-          </button>
-          <a href="index.html" class="btn btn-secondary btn-sm" style="background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.25);">
-            Ver Tienda ↗
-          </a>
-        </div>
-      </div>
-    </header>
-
-    <main class="container admin-main">
-
-      <!-- SECCIÓN 1: INGESTA CON IA DE LISTA EN JPG / TEXTO -->
-      <section class="admin-card">
-        <div class="admin-card-header">
-          <div>
-            <h2 class="admin-card-title">
-              <span>📷</span> Ingesta y Análisis Inteligente de Listas en JPG / PNG
-            </h2>
-            <p style="color: var(--kirma-text-muted); font-size: 0.875rem; margin-top: 4px;">
-              Sube o arrastra una fotografía de una lista de lotes, hoja de cálculo impresa o catálogo de proveedor. La IA leerá las columnas, extraerá especificaciones y generará las imágenes técnicas del equipo por referencia.
-            </p>
-          </div>
-          <span class="badge badge-disponible">MOTOR ACTIVO</span>
-        </div>
-
-        <!-- Zona de Arrastre de Imagen -->
-        <div class="dropzone-box" id="dropzone">
-          <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" style="display: none;">
-          <span class="dropzone-icon">📥</span>
-          <p style="font-weight: 700; color: var(--kirma-text-main); margin-bottom: 4px;">
-            Haz clic o arrastra aquí tu lista en JPG / PNG
-          </p>
-          <p style="font-size: 0.8125rem; color: var(--kirma-text-muted);">
-            Soporta listas de inventario, facturas de lote y planillas de especificaciones
-          </p>
-        </div>
-
-        <!-- Previsualización de la Imagen Cargada -->
-        <div id="preview-wrapper" class="preview-container" style="display: none;">
-          <div class="preview-image-box">
-            <img id="image-preview" src="" alt="Vista previa de lista JPG">
-          </div>
-          <div style="flex-grow: 1;">
-            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--kirma-green-700); font-weight: bold;">
-              IMAGEN CARGADA CORRECTAMENTE
+        <nav class="admin-nav">
+            <a href="#" class="admin-nav-item active" data-target="subview-dashboard">Dashboard</a>
+            <a href="#" class="admin-nav-item" data-target="subview-products">Inventario</a>
+            <a href="#" class="admin-nav-item" data-target="subview-imports">Importar Listas</a>
+            <a href="index.html" class="admin-nav-item" style="margin-top: 2rem;">Ver Sitio Público</a>
+            <a href="#" class="admin-nav-item" id="btn-logout" style="margin-top: auto; color: #fca5a5;">Cerrar Sesión</a>
+        </nav>
+        </aside>
+        
+        <main class="admin-main">
+        
+        <!-- SUBVIEW: Dashboard -->
+        <div id="subview-dashboard" class="subview active">
+            <h2 style="margin-bottom: 1.5rem;">Dashboard de Inventario</h2>
+            <div class="stats-grid" id="dashboard-stats">
+              <div class="stat-card"><div class="stat-value">...</div><div class="stat-label">Cargando</div></div>
             </div>
-            <p id="image-meta" style="font-size: 0.8125rem; color: var(--kirma-text-muted); margin-top: 4px;"></p>
+        </div>
 
-            <!-- Configuración de API Key de Gemini opcional -->
-            <div class="ai-config-grid">
-              <div>
-                <label class="input-label" for="gemini-api-key">API Key de Google Gemini (Opcional):</label>
-                <input type="password" id="gemini-api-key" class="input-text" placeholder="AIzaSy... (para visión Gemini en vivo)">
-                <span style="font-size: 0.6875rem; color: var(--kirma-text-muted); display: block; margin-top: 4px;">
-                  Se guarda localmente en tu navegador. Si no tienes una, el sistema usará el motor de extracción estructurado integrado.
-                </span>
-              </div>
-              <div>
-                <label class="input-label">Modo de Procesamiento:</label>
-                <select id="ai-mode" class="input-text" style="cursor: pointer;">
-                  <option value="gemini">Gemini Multimodal Vision (Recomendado)</option>
-                  <option value="local">Parser Estructurado de Hardware (Sin API Key)</option>
+        <!-- SUBVIEW: Products -->
+        <div id="subview-products" class="subview" style="display:none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2>Inventario</h2>
+            <div style="display: flex; gap: 1rem;">
+                <select id="filter-status" class="form-control">
+                <option value="">Todos los estados</option>
+                <option value="activo">Activos</option>
+                <option value="borrador">Borradores (Revisión)</option>
+                <option value="archivado">Archivados</option>
                 </select>
-                <span style="font-size: 0.6875rem; color: var(--kirma-text-muted); display: block; margin-top: 4px;">
-                  Puedes cambiar el modo si deseas procesar sin conexión a la API.
-                </span>
-              </div>
+                <button class="btn btn-primary" id="btn-new-product">Nuevo Producto</button>
             </div>
-
-            <div style="margin-top: 1rem; display: flex; gap: 0.75rem; align-items: center;">
-              <button class="btn btn-primary" id="btn-process-image">
-                ⚡ Analizar Lista y Extraer Equipos
-              </button>
-              <button class="btn btn-secondary" id="btn-remove-image">
-                Cambiar Imagen
-              </button>
             </div>
-
-            <!-- Indicador de Estado -->
-            <div id="processing-status" style="display: none;"></div>
-          </div>
+            
+            <div style="background: white; border-radius: 1rem; box-shadow: var(--shadow-sm); overflow: hidden;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead style="background: var(--kirma-surface); border-bottom: 2px solid var(--kirma-border);">
+                <tr>
+                    <th style="padding: 1rem;">ID</th>
+                    <th style="padding: 1rem;">Marca/Modelo</th>
+                    <th style="padding: 1rem;">Specs</th>
+                    <th style="padding: 1rem;">Precio Venta</th>
+                    <th style="padding: 1rem;">Stock</th>
+                    <th style="padding: 1rem;">Estado</th>
+                    <th style="padding: 1rem;">Acciones</th>
+                </tr>
+                </thead>
+                <tbody id="products-table-body">
+                <tr><td colspan="7" style="padding: 2rem; text-align:center;">Cargando inventario...</td></tr>
+                </tbody>
+            </table>
+            </div>
         </div>
 
-        <!-- O pegar texto manualmente si ya se tiene transcrito -->
-        <details style="margin-top: 1.5rem; border-top: 1px dashed var(--kirma-border-main); padding-top: 1rem;">
-          <summary style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--kirma-text-muted); cursor: pointer;">
-            ¿Prefieres pegar la lista como texto o tabla? Haz clic aquí
-          </summary>
-          <div style="margin-top: 0.75rem;">
-            <textarea id="manual-text-input" class="input-text" rows="5" placeholder="Ejemplo:
-Dell Latitude 5420 / i5-1135G7 / 16GB / 512 SSD / 14 FHD / $1.890.000 / Grado A
-Lenovo ThinkPad T14 / Ryzen 5 PRO / 16GB / 512 SSD / 14 FHD / $2.150.000 / Grado A"></textarea>
-            <button class="btn btn-secondary btn-sm" id="btn-process-text" style="margin-top: 0.5rem;">
-              Analizar Texto Pegado
-            </button>
-          </div>
-        </details>
-      </section>
+        <!-- SUBVIEW: Imports -->
+        <div id="subview-imports" class="subview" style="display:none;">
+            <h2>Importar Lista de Precios (OCR)</h2>
+            <p style="color:var(--kirma-text-muted); margin-bottom: 1.5rem;">Sube un PDF o imagen con la lista de precios del proveedor. El sistema utilizará IA para extraer los productos y compararlos con tu inventario.</p>
 
-      <!-- SECCIÓN 2: TABLA DE REVISIÓN (STAGING) Y GENERACIÓN VISUAL -->
-      <section class="admin-card" id="staging-section" style="display: none;">
-        <div class="admin-card-header">
-          <div>
-            <h2 class="admin-card-title">
-              <span>🛠️</span> Equipos Detectados para Revisión y Generación Visual
-            </h2>
-            <p style="color: var(--kirma-text-muted); font-size: 0.875rem; margin-top: 4px;">
-              Revisa o edita los datos extraídos de la JPG. El sistema ya ha generado los diagramas técnicos en 4 vistas correspondientes a cada referencia.
-            </p>
-          </div>
-          <div style="display: flex; gap: 0.5rem;">
-            <button class="btn btn-secondary btn-sm" id="btn-add-manual-row">+ Agregar Fila Manual</button>
-          </div>
+            <div style="background: white; padding: 2rem; border-radius: 1rem; border: 2px dashed var(--kirma-border); text-align: center;">
+              <form id="import-form">
+                <div class="form-group" style="max-width: 400px; margin: 0 auto 1rem; text-align: left;">
+                  <label class="form-label">Gemini API Key (Opcional si está en env)</label>
+                  <input type="password" id="gemini-key" class="form-control" placeholder="AIzaSy...">
+                </div>
+                <input type="file" id="import-file" accept=".pdf,.jpg,.jpeg,.png,.webp" style="display: none;" required>
+                <button type="button" class="btn btn-outline" onclick="document.getElementById('import-file').click()" style="margin-bottom: 1rem;">Seleccionar Archivo PDF/Imagen</button>
+                <div id="file-name-display" style="margin-bottom: 1rem; font-weight: bold;"></div>
+                <button type="submit" class="btn btn-primary" id="btn-upload-import" disabled>Subir y Procesar</button>
+              </form>
+            </div>
+            
+            <div id="import-status" style="margin-top: 1.5rem; text-align: center; color: var(--kirma-primary);"></div>
+            
+            <h3 style="margin-top: 3rem; margin-bottom: 1rem;">Historial de Importaciones</h3>
+            <div style="background: white; border-radius: 1rem; box-shadow: var(--shadow-sm); overflow: hidden;">
+              <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                  <thead style="background: var(--kirma-surface); border-bottom: 2px solid var(--kirma-border);">
+                  <tr>
+                      <th style="padding: 1rem;">ID</th>
+                      <th style="padding: 1rem;">Archivo</th>
+                      <th style="padding: 1rem;">Fecha</th>
+                      <th style="padding: 1rem;">Estado</th>
+                      <th style="padding: 1rem;">Registros</th>
+                  </tr>
+                  </thead>
+                  <tbody id="imports-history-body">
+                  <tr><td colspan="5" style="padding: 2rem; text-align:center;">Cargando...</td></tr>
+                  </tbody>
+              </table>
+            </div>
         </div>
 
-        <div class="staging-table-container">
-          <table class="staging-table">
-            <thead>
-              <tr>
-                <th style="width: 70px;">VISTA</th>
-                <th style="width: 100px;">TAG</th>
-                <th style="width: 90px;">MARCA</th>
-                <th style="width: 140px;">MODELO</th>
-                <th style="width: 150px;">PROCESADOR</th>
-                <th style="width: 90px;">RAM</th>
-                <th style="width: 100px;">DISCO</th>
-                <th style="width: 110px;">PANTALLA</th>
-                <th style="width: 120px;">PRECIO COP</th>
-                <th style="width: 100px;">ESTADO</th>
-                <th style="width: 80px;">BATERÍA</th>
-                <th style="width: 40px;"></th>
-              </tr>
-            </thead>
-            <tbody id="staging-tbody">
-              <!-- Filas generadas dinámicamente -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Barra de Acciones de Publicación -->
-        <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--kirma-border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-          <div style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--kirma-text-muted);">
-            <span id="staging-count">0</span> equipos listos para ingresar al catálogo.
-          </div>
-          <div style="display: flex; gap: 0.75rem;">
-            <button class="btn btn-secondary" id="btn-download-code">
-              💾 Descargar inventory.js Actualizado
-            </button>
-            <button class="btn btn-primary" id="btn-publish-live">
-              🚀 APROBAR Y PUBLICAR AL CATÁLOGO EN VIVO
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- SECCIÓN 3: GESTIÓN DEL CATÁLOGO ACTUALMENTE ACTIVO -->
-      <section class="admin-card">
-        <div class="admin-card-header">
-          <div>
-            <h2 class="admin-card-title">
-              <span>📦</span> Inventario Activo en Tienda
-            </h2>
-            <p style="color: var(--kirma-text-muted); font-size: 0.875rem; margin-top: 4px;">
-              Consulta las unidades actualmente visibles para tus clientes en Armenia, Quindío y toda Colombia.
-            </p>
-          </div>
-          <button class="btn btn-secondary btn-sm" id="btn-reset-to-defaults" style="color: #ef4444; border-color: #fca5a5;">
-            Restablecer al Catálogo Base
-          </button>
-        </div>
-
-        <div id="live-inventory-container" class="staging-table-container">
-          <!-- Renderizado dinámicamente -->
-        </div>
-      </section>
-
-    </main>
-
-  </div>
-
-  <!-- MODAL: CAMBIAR CONTRASEÑA MAESTRA -->
-  <div class="modal-backdrop" id="pwd-change-modal" role="dialog" aria-modal="true" aria-labelledby="modal-pwd-title">
-    <div class="modal-dialog" style="max-width: 440px;">
-      <button class="modal-close-btn" id="btn-close-pwd-modal" aria-label="Cerrar modal">✕</button>
-      <div style="padding: 1.5rem;">
-        <h3 id="modal-pwd-title" style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem;">Cambiar Clave Maestra</h3>
-        <p style="font-size: 0.8125rem; color: var(--kirma-text-muted); margin-bottom: 1.25rem;">
-          Define una nueva contraseña segura para el acceso al laboratorio administrativo.
-        </p>
-
-        <form id="change-pwd-form" onsubmit="return false;">
-          <div style="margin-bottom: 1rem;">
-            <label class="input-label" for="new-pwd-input">Nueva Contraseña:</label>
-            <input type="password" id="new-pwd-input" class="input-text" placeholder="Mínimo 6 caracteres" required>
-          </div>
-          <div style="margin-bottom: 1.5rem;">
-            <label class="input-label" for="confirm-pwd-input">Confirmar Nueva Contraseña:</label>
-            <input type="password" id="confirm-pwd-input" class="input-text" placeholder="Repite la contraseña" required>
-          </div>
-          <button type="submit" class="btn btn-primary" id="btn-save-new-pwd" style="width: 100%;">
-            GUARDAR NUEVA CONTRASEÑA
-          </button>
-        </form>
-      </div>
+        </main>
     </div>
   </div>
 
-  <!-- Script Modular del Módulo Admin con Seguridad Criptográfica -->
-  <script type="module" src="js/admin.js"></script>
+  <script type="module" src="js/admin-v2.js"></script>
 </body>
 </html>
