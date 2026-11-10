@@ -1,4 +1,4 @@
-name: Deploy KIRMA to GitHub Pages
+name: Deploy KIRMA-TECH to GitHub Pages
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Desplegar la raíz del proyecto donde están index.html, css/, js/ y assets/
+          # Solo subir archivos estáticos necesarios
           path: '.'
 
       - name: Deploy to GitHub Pages

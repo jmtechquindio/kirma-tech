@@ -1,153 +1,167 @@
-# KIRMA — Tecnología que renace.
+# KIRMA-TECH — Plataforma Comercial Audiovisual
 
-Plataforma digital profesional para **KIRMA**, empresa colombiana especializada en la comercialización de **equipos corporativos remanufacturados** (Dell Latitude, Lenovo ThinkPad, HP EliteBook), acompañados de servicio técnico especializado, diagnóstico de laboratorio y garantía por escrito.
+> **Soluciones audiovisuales y tecnología para tus eventos.**
 
----
-
-## 1. Identidad de Marca y Dirección de Arte
-
-* **Concepto central:** «Tecnología que renace.»
-* **Eje comercial:** «Equipos corporativos remanufacturados, seleccionados para volver a trabajar.»
-* **Hero Headline:** «EQUIPOS CORPORATIVOS. LISTOS PARA TRABAJAR.»
-* **Subtítulo:** «Tecnología que renace. Equipos corporativos remanufacturados, soporte técnico y acompañamiento real.»
-* **Personalidad visual:** Corporativa, técnica, editorial, sobria, humana y transparente.
-* **Paleta visual:**
-  * **Verde KIRMA** (`#164e39` / `#2a8a65`): Identidad, acento y señalización técnica.
-  * **Marrón / Tierra** (`#6e4626` / `#8b5b33`): Durabilidad, materia y tags de inventario.
-  * **Blanco / Crema** (`#fbfbfa` / `#f4f1ea`): Fondos limpios tipo hoja de especificaciones.
-  * **Carbón suave** (`#171918` / `#2e3330`): Tipografía de alto contraste descansado.
-* **Inspiración de diseño:** Fichas técnicas de fabricantes, etiquetas de inventario corporativo (`KIRMA / 024`), asset tags y catálogos editoriales contemporáneos. Cero estética genérica de IA, fondos oscuros ni promesas vacías.
+Plataforma web comercial profesional para **KIRMA-TECH**, empresa especializada en servicios audiovisuales, sonido portátil, alquiler de ayudas audiovisuales y producción multimedia para eventos en **Armenia, Quindío y el Eje Cafetero**.
 
 ---
 
-## 2. Módulos y Características Implementadas
+## 🎯 Objetivo Comercial
 
-1. **Header & Navegación Responsiva:**
-   - Logotipo con concepto oficial «Tecnología que renace.»
-   - Navegación clara y drawer móvil táctil accesible.
-   - CTA permanente: **HABLAR POR WHATSAPP**.
-2. **Sección Educativa:**
-   - Explicación honesta de qué es un equipo remanufacturado.
-   - Comparativa directa: **Nuevo vs. Usado vs. Remanufacturado**.
-   - Justificación técnica: ¿Por qué equipos corporativos? (Chasis, puertos, refrigeración, mantenimiento).
-3. **Catálogo de Equipos:**
-   - Filtros dinámicos en tiempo real (Marca, RAM, Almacenamiento, Rango de Precio en COP).
-   - Búsqueda instantánea de texto libre.
-   - Badges de disponibilidad transparente (`DISPONIBLE`, `ÚLTIMAS UNIDADES`, `AGOTADO`).
-4. **Ficha KIRMA (Asset Tag):**
-   - Nomenclatura corporativa numerada (ej. `KIRMA / 024`).
-   - Especificaciones exactas del fabricante (CPU, RAM, SSD NVMe, Pantalla IPS, GPU).
-   - Estado físico honesto y desglosado (Funcionamiento vs. Condición estética vs. Particularidades).
-   - Salud de batería evaluada en diagnóstico y cargador especificado.
-   - Desglose de «¿Qué incluye esta unidad?».
-   - Precios claros en pesos colombianos (COP).
-   - CTA directo a WhatsApp: «QUIERO ESTE EQUIPO».
-5. **Protocolo KIRMA CHECK (10/10):**
-   - Verificación de 10 puntos de laboratorio (Encendido, Pantalla, Teclado, Touchpad, Puertos, Conectividad, Almacenamiento, RAM, Cargador, Batería).
-   - Cláusula de transparencia: solo se marcan pruebas efectivamente realizadas.
-6. **Encuentra tu Equipo (Buscador por Necesidad):**
-   - Quiz interactivo basado en tareas: *Estudiar*, *Trabajar*, *Oficina*, *Programar*, *Diseño*, *Alto rendimiento*.
-   - Muestra el criterio técnico mínimo y los equipos recomendados.
-7. **Comparador KIRMA:**
-   - Bandeja flotante persistente con slots de selección (hasta 3 equipos).
-   - Modal tabular lado a lado con todas las especificaciones y diferencias clave.
-8. **Cómo Trabajamos & Envíos Nacionales:**
-   - Proceso en 5 pasos: *01 Selección*, *02 Revisión*, *03 Preparación*, *04 Entrega*, *05 Acompañamiento*.
-   - Sección especial para compradores en otras ciudades de Colombia (transportadoras aliadas, tiempos variables y costos transparentes).
-9. **Centro de Soporte Técnico:**
-   - Flujo paso a paso (01 a 04) para asistencia remota supervisada.
-   - Enlaces oficiales a instaladores de AnyDesk y TeamViewer.
-   - **Aviso fundamental de seguridad:** advertencia de copia de seguridad (backup) antes de cualquier restauración o formateo de Windows para prevenir pérdida de datos.
-10. **Garantía KIRMA (6 Meses):**
-    - Cobertura legal conforme a la Ley 1480 de 2011 (Estatuto del Consumidor de Colombia).
-    - Distinción entre garantía y soporte técnico.
-    - Exclusiones causales legales (líquidos, golpes, sobretensiones externas).
-    - Regla de suspensión del término de garantía durante el tiempo privado de uso.
-    - Procedimiento para falla repetida.
-11. **Módulo de Administración con IA (`admin.html`):**
-    - Subida y lectura inteligente de listas o fotos de inventario en JPG/PNG.
-    - Reconocimiento multimodal con Gemini Vision API (opcional) y motor estructurado integrado.
-    - Generador procedimental de diagramas vectoriales SVG por referencia de marca y modelo.
-    - Tabla de revisión y validación previa (Staging) con edición directa de precios en COP.
-    - Publicación inmediata al catálogo activo (`index.html`) y descarga del código `inventory.js`.
-12. **Documentación Interna KIRMA (Admin / Laboratory Architecture):**
-    - Visor interactivo de formatos operacionales: Ficha de Condición (FOR-TEC-001), Kirma Check Lab (FOR-TEC-002), Recepción de Garantía (FOR-GAR-001), Diagnóstico Técnico (FOR-GAR-002) y Acta de Entrega (FOR-GAR-003).
-13. **Integración Contextual con WhatsApp:**
-    - Generador de enlaces `https://wa.me/...` con mensajes preconfigurados según el contexto del usuario (consulta de producto, asesoría, comparador, soporte o garantía).
-13. **Preguntas Frecuentes (FAQ):**
-    - 12 preguntas y respuestas honestas sobre baterías, cargadores, envíos y garantías.
-14. **Nosotros & Contacto:**
-    - Manifiesto sobrio sin cifras inventadas.
-    - Canales de atención con base de operaciones en Armenia, Quindío, Colombia
+Convertir visitas en solicitudes de cotización mediante **WhatsApp 3148813857**.
 
 ---
 
-## 3. Estructura de Archivos
+## 📁 Estructura del Proyecto
 
-```text
+```
 kirma-tech/
-├── index.html                   # Entrada principal semántica y accesible (Schema.org JSON-LD, ARIA)
-├── README.md                    # Documentación técnica y comercial del proyecto
-├── css/
-│   ├── variables.css            # Tokens de diseño (Verde KIRMA, Tierra, Crema, Carbón)
-│   ├── base.css                 # Reset, tipografía editorial y contenedores
-│   ├── components.css           # Botones, Ficha KIRMA, Kirma Check, Badges, Modales, Drawer
-│   ├── sections.css             # Hero, Educativo, Catálogo, Finder, Soporte, Garantía, FAQ, Footer
-│   └── responsive.css           # Adaptaciones mobile-first y navegación táctil
-├── js/
-│   ├── app.js                   # Orquestador principal, navegación y eventos globales
-│   ├── data/
-│   │   ├── inventory.js         # Base de datos estructurada de laptops corporativas reales
-│   │   └── internal_records.js  # Esquemas de formatos técnicos y actas de garantía
-│   └── modules/
-│       ├── catalog.js           # Búsqueda, filtros por facetas y renderizado reactivo
-│       ├── finder.js            # Recomendador interactivo según necesidades de uso
-│       ├── comparator.js        # Lógica de comparación multi-equipo lado a lado
-│       ├── product_modal.js     # Modal de Ficha KIRMA con Kirma Check y fotos detalladas
-│       ├── support.js           # Guías de soporte remoto, links oficiales y avisos de backup
-│       ├── warranty.js          # Guía legal interactiva y flujo de solicitud de garantía
-│       ├── internal_docs.js     # Visor de formatos técnicos de laboratorio
-│       └── whatsapp.js          # Generación de URLs de WhatsApp con copy humano
-└── assets/
-    ├── icons/                   # Iconografía técnica SVG (CPU, RAM, SSD, Screen, Battery, Shield)
-    └── images/
-        └── laptops/             # Ilustraciones vectoriales técnicas de hardware (Dell, Lenovo, HP)
+├── index.html                        ← Plataforma principal (producción)
+├── kirma-tech-av.html                ← Fuente de desarrollo principal
+├── sitemap.xml                       ← SEO: mapa del sitio actualizado
+├── robots.txt                        ← Directivas para buscadores
+├── index.remanufacturados_backup.html← Backup versión anterior (equipos)
+└── README.md                         ← Este archivo
 ```
 
 ---
 
-## 4. Arquitectura y Backend KIRMA V2
+## 🛎️ Líneas de Servicio
 
-KIRMA V2 cuenta con una arquitectura robusta basada en **FastAPI (Python)** y **SQLite con WAL y Foreign Keys**, complementada por un frontend modular en JavaScript ES Modules:
-
-- **Backend FastAPI:** `backend/main.py`
-  - Autenticación administrativa con JWT y bcrypt (`/api/auth/login`).
-  - Catálogo público con filtros y paginación (`/api/products`).
-  - Módulo de importación inteligente de listas de precios PDF/JPG/PNG con extracción multimodal Gemini y parser heurístico determinista (`/api/admin/imports`).
-  - Historial auditable de precios (`/api/admin/price-history/{id}`) con fuente de archivo y motivo.
-  - Registro de auditoría administrativa (`audit_log`).
-- **Línea Oficial de WhatsApp:** **+57 314 881 3857** (`573148813857`).
+| # | Servicio | ID de sección |
+|---|---|---|
+| A | 🔊 Sonido para Eventos | `#sonido` |
+| B | 📽️ Ayudas Audiovisuales | `#audiovisuales` |
+| C | 📸 Fotografía y Video | `#fotografia` |
+| D | 🎬 Edición Multimedia | `#edicion` |
 
 ---
 
-## 5. Cómo Ejecutar el Proyecto Localmente
+## 📍 Cobertura Geográfica
 
-### Opción 1: Servidor KIRMA V2 (FastAPI + Frontend)
-Desde la terminal en el directorio raíz del proyecto:
-```powershell
-python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
-```
-o ejecutando el script:
-```powershell
-.\start.bat
-```
-Luego abre en tu navegador:
-- **Sitio Público:** `http://localhost:8000/`
-- **Panel Administrativo:** `http://localhost:8000/admin` (Credenciales por defecto: `admin` / `kirma2026`)
-- **Documentación Interactiva Swagger:** `http://localhost:8000/api/docs`
+- **Sede principal:** Armenia, Quindío
+- Calarcá · Circasia · Montenegro · Quimbaya
+- Pereira y Dosquebradas · Manizales · Cartago
+- Norte del Valle del Cauca
+- Otros municipios del Eje Cafetero (coordinación previa)
 
-### Opción 2: Ejecución de la Suite de Pruebas Automatizadas
-```powershell
-$env:PYTHONPATH="backend"
-python test_suite_complete.py
+---
+
+## 📱 Canal de Conversión
+
+**WhatsApp:** `3148813857`  
+**Enlace directo:** https://wa.me/573148813857
+
+---
+
+## 🚫 Política de Precios
+
+**NUNCA** se muestran precios, tarifas, rangos de costos ni tablas de valores. Todas las cotizaciones son personalizadas y se acuerdan directamente con el cliente por WhatsApp.
+
+Frases autorizadas:
+- *"Solicita una cotización personalizada."*
+- *"Nuestros servicios se cotizan de acuerdo con las características de cada evento."*
+- *"Precios negociables según el servicio, ubicación, duración y requerimientos técnicos."*
+
+---
+
+## 🗺️ Secciones del Sitio
+
+1. `#inicio` — Hero principal con CTAs
+2. `#nosotros` — Quiénes somos y valores
+3. `#servicios` — Overview de las 4 líneas de servicio
+4. `#sonido` — Detalle sonido + inventario
+5. `#audiovisuales` — Detalle proyección + inventario
+6. `#fotografia` — Detalle fotografía y video
+7. `#edicion` — Detalle edición multimedia
+8. `#equipamiento` — Catálogo visual de equipos
+9. `#cobertura` — Mapa y política de transporte
+10. `#cotizar` — Formulario multi-servicio → WhatsApp
+11. `#contacto` — Datos de contacto y CTA final
+
+---
+
+## ⚙️ Especificaciones Técnicas
+
+| Característica | Detalle |
+|---|---|
+| Tipo | Single-page HTML autocontenido |
+| CSS | Inline `<style>`, mobile-first, CSS Grid + Flexbox |
+| JS | Inline `<script>`, sin frameworks ni jQuery |
+| Fuentes | Google Fonts: Inter + Orbitron |
+| Iconos | SVG inline + Unicode emoji |
+| WhatsApp | 18 enlaces funcionales con mensajes pre-codificados |
+| Formulario | Validación JS + generación automática de mensaje |
+| Responsive | Mobile, tablet y desktop |
+| SEO | Schema.org LocalBusiness JSON-LD, meta tags, sitemap |
+| Dependencias externas | Solo Google Fonts (CDN) |
+| Pagos / Registro | ❌ Sin pagos, sin carrito, sin registro |
+
+---
+
+## 🔊 Inventario de Equipos
+
+### Sonido
+- 2× JBL Boombox 4
+- 1× JBL Boombox 3 Mini
+- 1× Soundcore 2 (12 W)
+- 3× Altavoces tipo karaoke (~80 W, con subwoofer y luces)
+- Micrófonos con cable
+- Micrófonos inalámbricos
+- Micrófonos de solapa
+- Consola mezcladora *(gestionada según el evento, no es equipo propio)*
+
+### Audiovisuales
+- 1× Videoproyector
+- 1× Portátil
+- 1× Telón liviano y portátil
+
+---
+
+## ✅ Auditoría de Validación
+
+- [x] Ningún precio, tarifa o valor monetario en el sitio
+- [x] No se anuncian equipos que KIRMA-TECH no posee
+- [x] La consola mezcladora no se anuncia como equipo propio
+- [x] Los altavoces BT no se describen como sistema de gran formato
+- [x] Política de transporte clara y honesta
+- [x] 18 enlaces de WhatsApp con número `573148813857`
+- [x] Formulario genera mensaje completo y codificado correctamente
+- [x] Multi-selección de servicios funcional
+- [x] Validación de campos requeridos con mensajes inline
+- [x] Botón flotante WhatsApp visible en todo momento
+- [x] Diseño responsive mobile-first
+- [x] SEO local Armenia / Eje Cafetero configurado
+
+---
+
+## 🚀 Despliegue
+
+El sitio es un HTML estático sin dependencias de servidor. Se puede publicar en:
+
+- **GitHub Pages** (recomendado, dominio `kirma-tech.lat` vía CNAME)
+- **Netlify** (arrastrar carpeta al dashboard)
+- **Vercel** (import desde GitHub)
+- Cualquier hosting de archivos estáticos
+
+```bash
+# Para prueba local
+# Abrir index.html directamente en el navegador
+# O usar un servidor local:
+npx serve .
+# o
+python -m http.server 8080
 ```
+
+---
+
+## 📅 Historial
+
+| Fecha | Versión | Descripción |
+|---|---|---|
+| 2026-11-10 | 2.0.0 | Plataforma audiovisual KIRMA-TECH completa |
+| 2026-10-15 | 1.x | Versión anterior (equipos remanufacturados) — archivada |
+
+---
+
+*© 2026 KIRMA-TECH — Armenia, Quindío, Colombia.*

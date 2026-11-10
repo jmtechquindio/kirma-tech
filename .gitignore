@@ -1,27 +1,46 @@
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.env
-.venv/
+*.pyo
+*.pyd
+.Python
+env/
 venv/
-ENV/
+.env
+*.egg-info/
+dist/
+build/
 
-# Archivos pesados subidos en pruebas
-backend/uploads/*.pdf
-backend/uploads/*.jpeg
-backend/uploads/*.jpg
-backend/uploads/*.png
-backend/uploads/*.webp
-!backend/uploads/.gitkeep
+# Base de datos (versión anterior)
+*.db
+*.sqlite
+*.sqlite3
 
-# Base de datos local transaccional
-# kirma.db se preserva localmente
-*.db-shm
-*.db-wal
-
-# IDE
-.vscode/
-.idea/
+# Archivos de sistema
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Node (si se usa en el futuro)
+node_modules/
+npm-debug.log*
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos temporales
+*.tmp
+*.bak
+*.orig
+
+# No subir scripts de migración internos
+migrate_inventory.py
+test_admin.py
+test_suite_complete.py

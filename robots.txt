@@ -1,8 +1,19 @@
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /admin/
-Disallow: /api/admin/
-Disallow: /backend/uploads/
 
+# Sitemap
 Sitemap: https://kirma-tech.lat/sitemap.xml
+
+# Disallow admin and backend routes
+Disallow: /admin.html
+Disallow: /backend/
+Disallow: /frontend/
+Disallow: /*.py$
+Disallow: /*.db$
+Disallow: /*.md$
+Disallow: /*.bat$
+Disallow: /*.txt$
+
+# Allow key pages
+Allow: /index.html
+Allow: /kirma-tech-av.html

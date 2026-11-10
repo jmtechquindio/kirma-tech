@@ -1,37 +1,55 @@
-# CHANGELOG — KIRMA V2
+# CHANGELOG — KIRMA-TECH
 
-Todas las notas notables de cambios para KIRMA V2 se documentan en este archivo.
+## [2.0.0] — 2026-11-10
 
-El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/)
-y el proyecto adhiere al Control Semántico de Versiones [SemVer](https://semver.org/).
+### 🆕 Nueva Plataforma: Servicios Audiovisuales
 
-## [2.0.0] — 2026-10-15
+Reescritura completa del sitio orientada a la nueva línea comercial de **KIRMA-TECH**: soluciones audiovisuales y multimedia para eventos.
 
-### Añadido
-- **Módulo de Importación Inteligente de Listas de Precios**:
-  - Soporte de subida y validación para archivos PDF, JPG, JPEG, PNG y WEBP.
-  - Flujo forzado y auditable: `CARGAR → VALIDAR → EXTRAER → INTERPRETAR → COMPARAR → REVISAR → APROBAR → ACTUALIZAR → REGISTRAR`.
-  - Extracción híbrida: soporte oficial para modelos multimodal Google Gemini (`gemini-1.5-flash`, `gemini-1.5-pro`, `gemini-2.0-flash-exp`) con fallback heurístico determinista para PDFs estructurados sin consumo de tokens ni dependencia de API keys.
-  - Detección y clasificación inteligente contra inventario existente: `NUEVO`, `ACTUALIZAR`, `SIN_CAMBIOS`, `POSIBLE_DUPLICADO` y `REVISION`.
-  - Asignación estructurada de KIRMA ID (`KIRMA-XXXXXX`).
-  - Historial de precios (`price_history`) con referencia al archivo original, usuario, identificador de importación (`IMP-YYYY-MM-NNNN`) y motivo del cambio.
-  - Trazabilidad y auditoría administrativa (`audit_log`) con IP y sellos de tiempo UTC.
-- **SEO Técnico**:
-  - Generación de `robots.txt` con protección de rutas administrativas y enlaces a sitemap.
-  - Generación de `sitemap.xml` canónico estructurado.
-  - Inclusión de etiqueta `canonical` y etiquetas Open Graph (`og:url`, `og:site_name`, `og:locale`).
-- **QA y Pruebas Automatizadas**:
-  - Creación de `test_suite_complete.py` con 10 pruebas unitarias y de integración de extremo a extremo que validan el 100% de los requerimientos de la plataforma.
+#### Añadido
+- Plataforma comercial 100% nueva para servicios audiovisuales
+- Navbar fijo responsive con hamburger móvil y drawer de pantalla completa
+- Hero section con animación CSS (grid de circuito, gradiente radial azul)
+- Sección "Quiénes somos" con valores y estadísticas visuales
+- 4 cards de servicios con CTAs directos a WhatsApp por mensaje pre-armado:
+  - 🔊 Sonido para Eventos
+  - 📽️ Ayudas Audiovisuales
+  - 📸 Fotografía y Video
+  - 🎬 Edición Multimedia
+- Secciones detalle de cada servicio con inventario y notas técnicas
+- Catálogo de equipamiento (10 cards visuales)
+- Mapa de cobertura geográfica (Armenia + Eje Cafetero)
+- Formulario de cotización multi-servicio con:
+  - Selector visual de servicios (toggle cards)
+  - Validación JS inline (sin browser alerts)
+  - Generación automática de mensaje WhatsApp codificado
+- Sección de contacto + card CTA WhatsApp
+- Footer con navegación completa y nota de precios negociables
+- Botón flotante WhatsApp con animación de pulso
+- 18 enlaces de WhatsApp funcionales (número 573148813857)
+- SEO: Schema.org LocalBusiness JSON-LD, meta tags locales, Open Graph
+- sitemap.xml actualizado con 11 URLs
+- robots.txt actualizado
 
-### Modificado
-- **Línea Oficial de WhatsApp**:
-  - Unificación de todos los puntos de contacto, botones del catálogo, fichas técnicas y configuración del sistema al canal oficial **+57 314 881 3857** (`573148813857`).
-- **Robustez del Comparador**:
-  - Implementación de validaciones con encadenamiento opcional (`?.`) para productos importados que aún no posean todos los campos secundarios, evitando excepciones en el cliente.
-- **Rutas de la API REST**:
-  - Implementación de alias bidireccionales para `/api/admin/price-history/{productId}` y `/api/admin/import-items/{id}` para garantizar compatibilidad con frontend y especificaciones OpenAPI.
+#### Estilo visual
+- Fondo oscuro elegante (#080b12)
+- Acento azul eléctrico (#0ea5e9 / #38bdf8)
+- Tipografía: Inter (texto) + Orbitron (headings/logo)
+- Glassmorphism cards con borde glow en hover
+- Animaciones fade-in por IntersectionObserver
+- 100% responsive, mobile-first
 
-### Corregido
-- Resuelto error crítico de conexión e incompatibilidad con modelo deprecado en Gemini Vision.
-- Corregida la ausencia del método `openChat` en `WhatsAppService` que impedía iniciar el chat de consulta desde la ficha modal del producto.
-- Resuelto problema de productos en estado borrador ocultos en el catálogo público: activación y sincronización de los 8 equipos corporativos base en la base de datos `kirma.db`.
+#### Política comercial implementada
+- ❌ Sin precios en ninguna sección
+- ❌ Sin tarifas, rangos ni estimaciones monetarias
+- ✅ Solo frases de cotización personalizada
+- ✅ Política de transporte honesta y clara
+- ✅ Inventario real sin exageraciones técnicas
+
+---
+
+## [1.x] — 2026-09-18 / 2026-10-15
+
+### Plataforma equipos remanufacturados (archivada)
+
+Versión anterior para comercialización de equipos corporativos remanufacturados (Dell, Lenovo, HP). Archivada como `index.remanufacturados_backup.html`.
